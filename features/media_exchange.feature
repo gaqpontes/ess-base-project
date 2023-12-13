@@ -1,7 +1,7 @@
-feature: 
-As a usuario
-I want to store and remove media from history
-So that I can control the media I see in my history
+Feature: Envio de mídia
+    As a usuário
+    I want to armazenar e remover mídias do histórico de mensagens
+    So that eu possa compartilhar mídias com outros usuários
 
 Scenario: Removes media from conversation history
 Given os usuários “Bia” e “Letícia” trocaram mensagens
