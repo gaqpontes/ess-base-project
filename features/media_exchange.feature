@@ -18,19 +18,17 @@ Scenario: Falha no compartilhamento de mídia
     Then "foto.png" não é compartilhada com "Leticia"
 
 Scenario: Remoção de mídia do histórico de conversa
-    Given o usuário “Leticia” enviou a mídia “foto.png” para “Bia”
-    And “Bia” aceitou o recebimento da mídia “foto.png” enviada por “Letícia”
-    When “Bia” solicita ao sistema que remova a mídia “foto.png” do seu histórico de conversa com "Leticia"
-    Then o sistema para de armazenar a mídia “foto.png” para o usuário "Bia"
+    Given o usuário "Leticia" enviou a mídia "foto.png" para "Bia"
+    And "Bia" aceitou o recebimento da mídia "foto.png" enviada por "Letícia"
+    When "Bia" solicita ao sistema que remova a mídia "foto.png" do seu histórico de conversa com "Leticia"
+    Then o sistema para de armazenar a mídia "foto.png" para o usuário "Bia"
     And "Leticia" ainda pode visualizar "foto.png" no seu historico de conversa com "Bia"
     And "Bia" não pode visualizar "foto.png" no seu histórico de conversa com "Letícia"
 
-Scenario: Store media for a user
-Given os usuários “Bia” e “Letícia” trocaram mensagens
-And “Leticia” enviou uma referência à mídia “foto.png” para “Bia”
-And o sistema salva a referência à mídia “foto.png”
-When “Bia” solicita ao sistema que faça o donload da mídia “foto.png”
-Then o sistema armazena a mídia “foto.png” para “Bia”
-And a mídia “foto.png” pode ser acessada por “Bia”
-Then "Bia" has access to "foto.png"
+Scenario: Consentimento de recebimento de mídia
+    Given os usuários "Bia" e "Letícia" trocaram mensagens
+    And "Leticia" enviou uma referência à mídia "foto.png" para "Bia"
+    When "Bia" solicita ao sistema que faça o download da mídia "foto.png"
+    Then o sistema armazena a mídia "foto.png" para "Bia"
+    And a mídia "foto.png" é recebida por "Bia"
 
