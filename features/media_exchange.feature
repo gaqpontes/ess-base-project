@@ -1,7 +1,14 @@
 Feature: Envio de mídia
     As a usuário
-    I want to armazenar e remover mídias do histórico de mensagens
+    I want to enviar e receber mídias
     So that eu possa compartilhar mídias com outros usuários
+
+Scenario: Compartilhamento de mídia
+    Given o usuário "Bia" possui o usuário "Leticia" em sua lista de contatos
+    And "Bia" está na página de sua conversa com "Leticia"
+    When "Bia" seleciona a mídia "foto.png" para envio
+    And "foto.png" tem tamanho igual ou menor ao tamanho máximo permitido
+    Then "foto.png" é compartilhada com "Leticia"
 
 Scenario: Removes media from conversation history
 Given os usuários “Bia” e “Letícia” trocaram mensagens
