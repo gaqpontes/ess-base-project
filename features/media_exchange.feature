@@ -17,14 +17,13 @@ Scenario: Falha no compartilhamento de mídia
     And "foto.png" tem tamanho maior que ao tamanho máximo permitido
     Then "foto.png" não é compartilhada com "Leticia"
 
-Scenario: Removes media from conversation history
-Given os usuários “Bia” e “Letícia” trocaram mensagens
-And “Leticia” enviou a mídia “foto.png” para “Bia”
-And “Bia” fez o download da mídia “foto.png” enviada por “Letícia”
-When “Bia” solicita ao sistema que remova a mídia “foto.png”  do seu histórico de conversa
-And o sistema para de armazenar a mídia “foto.png” para “Bia”
-And o sistema para de armazenar para “Bia” a mensagem que continha uma referência para “foto.png”
-Then a mídia “foto.png” foi removida do histórico de conversa entre “Bia” e “Letícia”
+Scenario: Remoção de mídia do histórico de conversa
+    Given o usuário “Leticia” enviou a mídia “foto.png” para “Bia”
+    And “Bia” aceitou o recebimento da mídia “foto.png” enviada por “Letícia”
+    When “Bia” solicita ao sistema que remova a mídia “foto.png” do seu histórico de conversa com "Leticia"
+    Then o sistema para de armazenar a mídia “foto.png” para o usuário "Bia"
+    And "Leticia" ainda pode visualizar "foto.png" no seu historico de conversa com "Bia"
+    And "Bia" não pode visualizar "foto.png" no seu histórico de conversa com "Letícia"
 
 Scenario: Store media for a user
 Given os usuários “Bia” e “Letícia” trocaram mensagens
@@ -35,4 +34,3 @@ Then o sistema armazena a mídia “foto.png” para “Bia”
 And a mídia “foto.png” pode ser acessada por “Bia”
 Then "Bia" has access to "foto.png"
 
-Scenario: Remove media for single user
