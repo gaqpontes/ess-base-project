@@ -1,4 +1,4 @@
-Feature: Lista de Conversas Recentes
+Feature: Recuperação de conta via e-mail (esqueci a senha)
     As a usuário
     I want recuperar a senha da minha conta para que eu possa efetuar login
 
