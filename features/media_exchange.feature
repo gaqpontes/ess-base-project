@@ -3,19 +3,21 @@ Feature: Envio de mídia
     I want to enviar e receber mídias
     So that eu possa compartilhar mídias com outros usuários
 
-Scenario: Compartilhamento de mídia com sucesso
-    Given o usuário "Bia" possui o usuário "Leticia" em sua lista de contatos
-    And "Bia" está na página de sua conversa com "Leticia"
+Scenario: Envio de mídia bem sucedido
+    Given o usuário "Bia" vê o usuário "Leticia" na página "Contatos"
+    And "Bia" está na página "Conversa com Leticia"
+    And "Bia" vê a opção "Enviar mídia"
     When "Bia" seleciona a mídia "foto.png" para envio
-    And "foto.png" tem tamanho igual ou menor ao tamanho máximo permitido
-    Then "foto.png" é compartilhada com "Leticia"
+    And "foto.png" tem tamanho igual ou menor que "5mb"
+    Then "Bia" vê a mensagem de "Mídia enviada!"
 
-Scenario: Falha no compartilhamento de mídia
-    Given o usuário "Bia" possui o usuário "Leticia" em sua lista de contatos
-    And "Bia" está na página de sua conversa com "Leticia"
+Scenario: Envio de mídia mal sucedido
+    Given o usuário "Bia" vê o usuário "Leticia" na página "Contatos"
+    And "Bia" está na página "Conversa com Leticia"
+    And "Bia" vê a opção "Enviar mídia"
     When "Bia" seleciona a mídia "foto.png" para envio
-    And "foto.png" tem tamanho maior que ao tamanho máximo permitido
-    Then "foto.png" não é compartilhada com "Leticia"
+    And "foto.png" tem tamanho maior que "5mb"
+    Then "Bia" vê a mensagem de "Erro!"
 
 Scenario: Remoção de mídia do histórico de conversa
     Given o usuário "Leticia" enviou a mídia "foto.png" para "Bia"
