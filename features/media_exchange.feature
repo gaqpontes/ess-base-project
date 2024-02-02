@@ -19,13 +19,13 @@ Scenario: Envio de mídia mal sucedido
     And "foto.png" tem tamanho maior que "5mb"
     Then "Bia" vê a mensagem de "Erro!"
 
-Scenario: Remoção de mídia do histórico de conversa
-    Given o usuário "Leticia" enviou a mídia "foto.png" para "Bia"
-    And "Bia" aceitou o recebimento da mídia "foto.png" enviada por "Letícia"
-    When "Bia" solicita ao sistema que remova a mídia "foto.png" do seu histórico de conversa com "Leticia"
-    Then o sistema para de armazenar a mídia "foto.png" para o usuário "Bia"
-    And "Leticia" ainda pode visualizar "foto.png" no seu historico de conversa com "Bia"
-    And "Bia" não pode visualizar "foto.png" no seu histórico de conversa com "Letícia"
+Scenario: Remoção bem sucedida de mídia do histórico
+    Given o usuário "Leticia" está na página "Conversa com Bia"
+    And "Letícia" vê "2" mídias: "foto.png" e "audio.mp3"
+    When "Leticia" seleciona "foto.png"
+    And "Leticia" seleciona "Excluir"
+    Then "Leticia" vê a mensagem de "Mídia excluída!"
+    And "Letícia" vê "1" mídia: "audio.mp3"
 
 Scenario: Consentimento de recebimento de mídia
     Given os usuários "Bia" e "Letícia" trocaram mensagens
