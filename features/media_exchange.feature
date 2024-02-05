@@ -24,9 +24,19 @@ Scenario: Remoção bem sucedida de mídia do histórico
     And "Letícia" vê "2" mídias: "foto.png" e "audio.mp3"
     When "Leticia" seleciona "foto.png"
     And "Leticia" seleciona "Excluir"
+    And "Leticia" seleciona "Confirmar"
     Then "Leticia" vê a mensagem de "Mídia excluída!"
     And "Letícia" vê "1" mídia: "audio.mp3"
 
+Scenario: Remoção mal sucedida de mídia do histórico
+    Given o usuário "Leticia" está na página "Conversa com Bia"
+    And "Letícia" vê "2" mídias: "foto.png" e "audio.mp3"
+    When "Leticia" seleciona "foto.png"
+    And "Leticia" seleciona "Excluir"
+    And "Leticia" seleciona "Cancelar"
+    Then "Leticia" vê a mensagem de "Operação cancelada"
+    And "Letícia" vê "2" mídias: "foto.png" e"audio.mp3"
+    
 Scenario: Consentimento de recebimento de mídia
     Given os usuários "Bia" e "Letícia" trocaram mensagens
     And "Leticia" enviou uma referência à mídia "foto.png" para "Bia"
