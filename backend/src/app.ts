@@ -4,9 +4,10 @@ import cors from 'cors';
 import logger from './logger';
 import setupRoutes from './routes/index';
 import { HttpError } from './utils/errors/http.error';
+import { SetupError } from './utils/errors/setup.error';
 import { FailureResult } from './utils/result';
 import Database from './database';
-
+import Env from './env';
 const app: express.Express = express();
 app.use(express.json());
 
@@ -37,7 +38,6 @@ app.use(
   }
 );
 
-// e.g. Seed database with initial data;
-Database.seed();
+Database.setupConnection(Env.DBUSER,Env.DBPASSWORD,Env.DBURI);
 
 export default app;

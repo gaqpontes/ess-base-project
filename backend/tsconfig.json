@@ -7,5 +7,6 @@
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true
-  }
+  },
+  "include": ["src/**/*"]
 }

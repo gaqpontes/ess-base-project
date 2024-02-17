@@ -11,17 +11,26 @@ class HelloController {
   }
 
   private initRoutes() {
-    
+
     this.router.get(`${this.prefix}`, (req: Request, res: Response) =>
-    this.getHello(req, res)
+      this.getHello(req, res)
     );
-    
+
+    this.router.post(`${this.prefix}`, (req: Request, res: Response) =>
+      this.postHello(req, res)
+    );
   }
 
-  private async getHello(req: Request, res: Response){
+  private async getHello(req: Request, res: Response) {
     return new SuccessResult({
       msg: 'Hello World',
       data: null,
+    }).handle(res);
+  }
+  private async postHello(req: Request, res: Response) {
+    return new SuccessResult({
+      msg: 'Hello World',
+      data: req.body,
     }).handle(res);
   }
 

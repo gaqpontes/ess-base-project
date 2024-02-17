@@ -1,74 +1,55 @@
+import { Model } from 'mongoose';
 import Database from '../database';
 import BaseEntity from '../entities/base.entity';
 import { HttpInternalServerError } from '../utils/errors/http.error';
-import { v4 as uuidv4 } from 'uuid';
 
 type FilterFunction<T> = (item: T) => boolean;
 
 export default class BaseRepository<T extends BaseEntity> {
   private prefix: string;
   private db: Database;
-
-  constructor(prefix: string) {
+  private model: Model<any>;
+  constructor(prefix: string, model: Model<any>) {
     this.prefix = prefix;
+    this.model = model;
     this.db = Database.getInstance();
   }
 
   public async add(data: T): Promise<T> {
     try {
-      if (!this.db.data[this.prefix]) {
-        this.db.data[this.prefix] = [];
-      }
-      const newItem = {
-        ...data,
-        id: uuidv4(),
-      };
-      this.db.data[this.prefix].push(newItem);
-      return newItem;
+      const result = await this.model.create(data);
+      return result;
     } catch (e) {
       throw new HttpInternalServerError();
     }
   }
 
   public async update(
-    filter: FilterFunction<T>,
+    id: String,
     data: Partial<T>
   ): Promise<T | null> {
     try {
-      if (!this.db.data[this.prefix]) {
-        return null;
-      }
-      const item = this.db.data[this.prefix].find(filter);
-      if (item) {
-        delete data.id;
-        Object.assign(item, data);
-        return item;
-      }
-      return null;
+      const result = await this.model.findByIdAndUpdate(id, data);
+      return result;
     } catch (e) {
       throw new HttpInternalServerError();
     }
   }
 
-  public async findOne(filter: FilterFunction<T>): Promise<T | null> {
+  public async findOne(filter: any): Promise<T | null> {
     try {
-      if (!this.db.data[this.prefix]) {
-        return null;
-      }
-      return this.db.data[this.prefix].find(filter) || null;
+      const result = await this.model.findOne(filter).exec();
+      return result || null;
     } catch (e) {
       throw new HttpInternalServerError();
     }
   }
 
-  public async findAll(filter?: FilterFunction<T>): Promise<T[]> {
+  public async findAll(filter?: any): Promise<T[]> {
     try {
-      if (!this.db.data[this.prefix]) {
-        return [];
-      }
-      return filter
-        ? this.db.data[this.prefix].filter(filter)
-        : this.db.data[this.prefix];
+      return await filter
+        ? this.model.find(filter).exec()
+        : this.model.find({}).exec();
     } catch (e) {
       throw new HttpInternalServerError();
     }
