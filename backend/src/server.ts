@@ -20,5 +20,9 @@ function onConnection(socket: socket.Socket) {
         connectedSockets.delete(socket.id);
     });
     
+    socket.on('message', (data) => {
+        console.log(data)
+        socket.broadcast.emit('chat-message', data)
+    });
 }
 export default server;
