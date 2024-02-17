@@ -13,6 +13,3 @@ server.listen(4000, () => {
   console.log("Message server running");
 });
     
-client.on('connect', () => {
-    console.log('Connected to server');
-});
