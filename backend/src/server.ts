@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import http from 'http';
 import socket from 'socket.io';
 import app from './app';
+import fs from 'fs';
 
 const server: http.Server = new http.Server(app);
 const io: socket.Server = new socket.Server(server);
@@ -26,7 +27,9 @@ function onConnection(socket: socket.Socket) {
     });
 
     socket.on('upload', ({data}) => {
-        console.log(data);
+        fs.writeFileSync('./src/upload/' + `${data.name}`, data.content, { encoding: 'base64', flag: 'w'} );
+        const content = data.content;
+        socket.emit('uploaded', { buffer: content.toString('base64') });
     });
 }
 export default server;
