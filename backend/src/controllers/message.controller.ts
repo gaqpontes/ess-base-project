@@ -1,20 +1,20 @@
 import { Router, Request, Response } from 'express';
 import { SuccessResult } from '../utils/result';
+import MessagesDatabase from '../database/message.database';
 import { IMessage } from '../interfaces/chat.interface';
-import { messageModel } from '../models/chat.model';
-
 
 class MessageController {
-    private prefix: string = '/messages';
-    public router: Router;
+  private prefix: string = '/messages';
+  public router: Router;
+  private database: MessagesDatabase = MessagesDatabase.getInstance();
 
-    constructor(router: Router) {
-    this.router = router;
-    this.initRoutes();
-    }
+  constructor(router: Router) {
+  this.router = router;
+  this.initRoutes();
+  }
 
-    private initRoutes() {    
-    this.router.get(`${this.prefix}`, (req: Request, res: Response) =>
+  private initRoutes() {    
+    this.router.get(`${this.prefix}/:sender`, (req: Request, res: Response) =>
     this.getMessage(req, res));
 
     this.router.post(`${this.prefix}`, (req: Request, res: Response) =>
@@ -22,17 +22,30 @@ class MessageController {
 
     this.router.post(`${this.prefix}/upload`, (req: Request, res: Response) =>
     this.postFile(req, res));
-    }
+  }
 
   private async getMessage(req: Request, res: Response){
+    const sender = req.params.sender;
+
+    const messages = this.database.getMessagesByParticipant(sender);
+
     return new SuccessResult({
-      msg: 'Hello World',
-      data: null,
+      msg: 'Sucessfull get',
+      data: messages,
     }).handle(res);
   }
 
   private async postMessage(req: Request, res: Response){
     const { name, message } = req.body;
+    const info = { name, message };
+    
+    const messageSent: IMessage = {
+      sender: info.name,
+      content: info.message
+    }
+
+    this.database.addMessage(messageSent);
+
     return new SuccessResult({
         msg: 'Message sent successfully',
         data: {name, message},

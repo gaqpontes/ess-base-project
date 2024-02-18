@@ -8,7 +8,5 @@ app.listen(Env.PORT, () => {
   logger.info(`Server started on http://localhost:${Env.PORT}/api`);
 });
 
-server.listen(4000, () => {
-  console.log("Message server running");
-});
+
     

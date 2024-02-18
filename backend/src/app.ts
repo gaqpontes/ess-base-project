@@ -90,5 +90,4 @@ app.use(
 // e.g. Seed database with initial data;
 Database.seed();
 
-
 export default app;
