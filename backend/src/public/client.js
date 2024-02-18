@@ -55,10 +55,25 @@ socket.on('uploaded', (data) => {
 });
 
 function renderFile(isUserSender, data) {
+    const isImage = isBase64Image(data.buffer);
+    const isVideo = isBase64Video(data.buffer);
+    const isAudio = isBase64Audio(data.buffer);
+    const isPdf = isBase64Pdf(data.buffer);
+
+    var elementType = '';
+    if (isImage) elementType = 'image';
+    else if (isVideo) elementType = 'video';
+    else if (isAudio) elementType = 'audio';
+    else if (isPdf) elementType = 'pdf';
+    else elementType = 'document';
+
     const element = `
         <li class="${isUserSender ? 'message-right' : 'message-left'}">
                 <p class="message">
-                    <img src=${data.buffer} />
+                    ${elementType === 'image' ? `<img src="${data.buffer}" />` : ''}
+                    ${elementType === 'video' ? `<video src="${data.buffer}" controls></video>` : ''}
+                    ${elementType === 'audio' ? `<audio src="${data.buffer}" controls></audio>` : ''}
+                    ${elementType === 'pdf' ? `<embed src="${data.buffer}" type="application/pdf" width="100%" height="600px" />` : ''}
                 </p>
         </li>
     `;
@@ -74,4 +89,20 @@ function renderMessages(isUserSender, data) {
         </li>
     `;
     messageContainer.innerHTML += element;
+}
+
+function isBase64Image(buffer) {
+    return new RegExp('^data:image\/(jpeg|png|gif);base64,').test(buffer);
+}
+
+function isBase64Video(buffer) {
+    return new RegExp('^data:video\/(mp4|webm);base64,').test(buffer);
+}
+
+function isBase64Audio(buffer) {
+    return new RegExp('^data:audio\/(mp3|wav);base64,').test(buffer);
+}
+
+function isBase64Pdf(buffer) {
+    return new RegExp('^data:application\/pdf;base64,').test(buffer);
 }
