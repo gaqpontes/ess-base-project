@@ -9,8 +9,8 @@ class MessageController {
   private database: MessagesDatabase = MessagesDatabase.getInstance();
 
   constructor(router: Router) {
-  this.router = router;
-  this.initRoutes();
+    this.router = router;
+    this.initRoutes();
   }
 
   private initRoutes() {    
