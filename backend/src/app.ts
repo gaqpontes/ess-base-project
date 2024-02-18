@@ -8,6 +8,8 @@ import { HttpError } from './utils/errors/http.error';
 import { FailureResult } from './utils/result';
 import Database from './database';
 import ContactsDatabase from './database/contacts.database';
+import userRoutes from './routes/user.route';
+import loginRouter from './routes/user_login.route'; 
 
 const app: express.Express = express();
 
@@ -22,6 +24,11 @@ app.use(
 );
 
 setupRoutes(app);
+
+// Adicione as rotas do usuário à aplicação
+app.use('/api/users', userRoutes);
+app.use('/api/users', loginRouter);
+
 
 
 // Rota para obter lista de contatos
