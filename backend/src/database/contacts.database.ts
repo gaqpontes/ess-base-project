@@ -1,4 +1,4 @@
-import { Contact } from '../models/contacts.model';
+import { Contact } from '../interfaces/contacts.interface';
 
 export default class ContactsDatabase {
     private static instance: ContactsDatabase;
