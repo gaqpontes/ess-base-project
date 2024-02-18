@@ -2,7 +2,6 @@ import app from './app';
 import logger from './logger';
 import Env from './env';
 import http from 'http';
-import client from './client';
 import server from './server';
 
 app.listen(Env.PORT, () => {
