@@ -48,12 +48,11 @@ function sendMessage() {
 
 function sendFile() {
     const file = fileInput.files[0];
-    const title = file.name;
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (() => {
         const sentData = {
-            name: title,
+            name: nameInput.value,
             content: reader.result,
         };
 
