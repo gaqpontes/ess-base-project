@@ -1,31 +1,91 @@
 Feature: Lista de contatos
-    As um usu�rio
+    As um "Pedro"
     I want acessar e gerenciar lista de contatos
     So that posso manter e gerenciar uma lista atualizada
 
-Scenario: Adi��o de Novo Contato na Lista
-    Given o usu�rio est� na p�gina de "Lista de Contatos"
-    When o usu�rio encontra e toca no bot�o de adi��o de novo contato
-    Then uma nova tela de inser��o de informa��es do contato � apresentada
-    And o usu�rio preenche manualmente as informa��es do novo contato
-    when o usu�rio confirma a adi��o do novo contato
-    Then o usu�rio � redirecionado de volta � p�gina de "Lista de Contatos"
-    And o novo contato est� incorporado � lista de contatos
+Scenario: Adição de um Novo Contato na Lista (confirmado)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
+    And "Pedro" vê a opção "adicionar contato"
+    When "Pedro" seleciona a opção "adicionar contato"
+    Then "Pedro" está na tela de "inserção de informações do contato"
+    When "Pedro" preenche manualmente os campos "Letícia", "12345678"
+    And "Pedro" vê a opção "confirmar" e "cancelar"
+    When "Pedro" seleciona "confirmar"
+    Then "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
 
-Scenario: Informa��es do Contato
-    Given o usu�rio est� na p�gina de "Lista de Contatos"
-    And o usu�rio possui contatos na lista
-    When o usu�rio clica no nome de um contato espec�fico
-    Then uma nova tela � apresentada com as informa��es do contato selecionado
-    And o usu�rio pode visualizar detalhes como nome, foto, status e outras informa��es relevantes
-    And o usu�rio tem a op��o de iniciar uma conversa com o contato
-    And ao selecionar a op��o de iniciar conversa, a tela de conversa � aberta
+Scenario: Adição de um Novo Contato na Lista (cancelado)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
+    And "Pedro" vê a opção "adicionar contato"
+    When "Pedro" seleciona a opção "adicionar contato"
+    Then "Pedro" está na tela de "inserção de informações do contato"
+    When "Pedro" preenche manualmente os campos "Letícia", "12345678", "vegetariana"
+    And "Pedro" vê a opção "confirmar" e "cancelar"
+    When "Pedro" seleciona "cancelar"
+    Then "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
 
-Scenario: Busca por Contato
-    Given o usu�rio est� na p�gina de "Lista de Contatos"
-    And o usu�rio possui contatos na lista
-    When o usu�rio utiliza a fun��o de busca para encontrar um contato espec�fico
-    Then o sistema exibe os resultados da busca, destacando o contato desejado
-    And os demais contatos na lista s�o filtrados de acordo com os crit�rios da pesquisa
-    And o usu�rio pode visualizar os contatos que correspondem � busca
-    And o usu�rio pode interagir com o contato desejado a partir dos resultados da busca
+Scenario: Adição de um Novo Contato na Lista (erro)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
+    And "Pedro" vê a opção "adicionar contato"
+    When "Pedro" seleciona a opção "adicionar contato"
+    Then "Pedro" está na tela de "inserção de informações do contato"
+    When "Pedro" preenche manualmente os campos "Letícia", "12345678", "vegetariana"
+    And "Pedro" vê a opção "confirmar" e "cancelar"
+    When "Pedro" seleciona "confirmar"
+    Then "Pedro" recebe uma mensagem "Erro! Usuário não cadastro no sistema"
+    And "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
+
+Scenario: informações do Contato (iniciar conversa)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria" e "João"
+    When "Pedro" clica no contato "Maria"
+    Then "Pedro" é redirecionado para a tela "informações do contato" de "Maria"
+    And "Pedro" pode visualizar detalhes como nome, foto, número, informações adicionais, a opção "iniciar conversa" e a opção "remover contato"
+    When "Pedro" clica em  "iniciar conversa"
+    Then a tela de conversa é aberta
+
+Scenario: informações do Contato (remover contato)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
+    When "Pedro" clica no contato "Maria"
+    Then "Pedro" é redirecionado para a tela "informações do contato" de "Maria"
+    And "Pedro" pode visualizar detalhes como nome, foto, número, informações adicionais, a opção "iniciar conversa" e a opção "remover contato"
+    When "Pedro" clica em  "remover contato"
+    Then a mensagem de confirmação com as opções "Confirmar" e "Cancelar" é exibida
+    When "Pedro" seleciona "Confirmar"
+    Then "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Letícia" e "João"
+
+Scenario: informações do Contato (remover contato)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
+    When "Pedro" clica no contato "Maria"
+    Then "Pedro" é redirecionado para a tela "informações do contato" de "Maria"
+    And "Pedro" pode visualizar detalhes como nome, foto, número, informações adicionais, a opção "iniciar conversa" e a opção "remover contato"
+    When "Pedro" clica em  "remover contato"
+    Then a mensagem de confirmação com as opções "Confirmar" e "Cancelar" é exibida
+    When "Pedro" seleciona "Cancelar"
+    Then "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
+
+
+Scenario: Busca por Contato (bem-sucedida)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
+    And "Pedro" vê a opção "buscar"
+    When "Pedro" digita "Letícia"
+    Then "Pedro" vê o contato "Letícia", destacado como desejado
+    And os demais contatos na lista são filtrados de acordo com os critérios da pesquisa
+
+Scenario: Busca por Contato (malsucedida)
+    Given o usuário "Pedro" está na página de "Lista de Contatos"
+    And "Pedro" vê os contatos "Maria", "João" e "Letícia"
+    And "Pedro" vê a opção "buscar"
+    When "Pedro" digita "Paulo"
+    Then "Pedro" vê uma mensagem "erro! Usuário não encontrado"
+    And os demais contatos na lista são filtrados de acordo com os critérios da pesquisa
