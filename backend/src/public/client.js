@@ -30,10 +30,14 @@ function sendMessage() {
 
 function sendFile() {
     const file = fileInput.files[0];
+    const title = file.name;
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (() => {
-        const data = reader.result;
+        const data = {
+            name: title,
+            content: reader.result,
+        };
         socket.emit('upload', { data });
     });
 };
@@ -45,6 +49,21 @@ socket.on('connect', () => {
 socket.on('chat-message', (data) => {
     renderMessages(false, data);
 });
+
+socket.on('uploaded', (data) => {
+    renderFile(false, data);
+});
+
+function renderFile(isUserSender, data) {
+    const element = `
+        <li class="${isUserSender ? 'message-right' : 'message-left'}">
+                <p class="message">
+                    <img src=${data.buffer} />
+                </p>
+        </li>
+    `;
+    messageContainer.innerHTML += element;
+}
 
 function renderMessages(isUserSender, data) {
     const element = `
