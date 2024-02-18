@@ -24,5 +24,9 @@ function onConnection(socket: socket.Socket) {
         console.log(data)
         socket.broadcast.emit('chat-message', data)
     });
+
+    socket.on('upload', ({data}) => {
+        console.log(data);
+    });
 }
 export default server;

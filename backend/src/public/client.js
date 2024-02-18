@@ -4,11 +4,18 @@ const messageContainer = document.getElementById('message-container');
 const nameInput = document.getElementById('name-input');
 const messageForm = document.getElementById('message-form');
 const messageInput = document.getElementById('message-input');
+const fileForm = document.getElementById('file-form');
+const fileInput = document.getElementById('file-input');
 
 messageForm.addEventListener('submit', (e) => {
     e.preventDefault();
     sendMessage();
 })
+
+fileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendFile();
+});
 
 function sendMessage() {
     console.log(messageInput.value);
@@ -20,6 +27,16 @@ function sendMessage() {
     renderMessages(true, data);
     messageInput.value = '';
 }
+
+function sendFile() {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (() => {
+        const data = reader.result;
+        socket.emit('upload', { data });
+    });
+};
 
 socket.on('connect', () => {
     console.log('Connected to server');
