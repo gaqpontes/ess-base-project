@@ -1,4 +1,4 @@
-const socket = io('http://localhost:4000', {});
+const SERVER_URL = 'http://localhost:5001/api/messages';
 
 const messageContainer = document.getElementById('message-container');
 const nameInput = document.getElementById('name-input');
@@ -18,14 +18,32 @@ fileForm.addEventListener('submit', (e) => {
 });
 
 function sendMessage() {
-    console.log(messageInput.value);
     const data = {
         name: nameInput.value,
         message: messageInput.value
-    }
-    socket.emit('message', data);
-    renderMessages(true, data);
-    messageInput.value = '';
+    };
+
+    fetch(`${SERVER_URL}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send message');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.data);
+        renderMessages(true, data.data);
+        messageInput.value = '';
+    })
+    .catch(error => {
+        console.error('Error sending message:', error);
+    });
 }
 
 function sendFile() {
@@ -34,31 +52,42 @@ function sendFile() {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (() => {
-        const data = {
+        const sentData = {
             name: title,
             content: reader.result,
         };
-        socket.emit('upload', { data });
+
+        const data = JSON.stringify(sentData)
+
+        fetch(`${SERVER_URL}/upload`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to upload file');
+            }
+            return response.json();
+        })
+        .then(data => {
+            renderFile(false, data.data);
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
     });
-};
 
-socket.on('connect', () => {
-    console.log('Connected to server');
-});
-
-socket.on('chat-message', (data) => {
-    renderMessages(false, data);
-});
-
-socket.on('uploaded', (data) => {
-    renderFile(false, data);
-});
+}
 
 function renderFile(isUserSender, data) {
-    const isImage = isBase64Image(data.buffer);
-    const isVideo = isBase64Video(data.buffer);
-    const isAudio = isBase64Audio(data.buffer);
-    const isPdf = isBase64Pdf(data.buffer);
+    const content = data.content;
+    const isImage = isBase64Image(content);
+    const isVideo = isBase64Video(content);
+    const isAudio = isBase64Audio(content);
+    const isPdf = isBase64Pdf(content);
 
     var elementType = '';
     if (isImage) elementType = 'image';
@@ -70,10 +99,10 @@ function renderFile(isUserSender, data) {
     const element = `
         <li class="${isUserSender ? 'message-right' : 'message-left'}">
                 <p class="message">
-                    ${elementType === 'image' ? `<img src="${data.buffer}" />` : ''}
-                    ${elementType === 'video' ? `<video src="${data.buffer}" controls></video>` : ''}
-                    ${elementType === 'audio' ? `<audio src="${data.buffer}" controls></audio>` : ''}
-                    ${elementType === 'pdf' ? `<embed src="${data.buffer}" type="application/pdf" width="100%" height="600px" />` : ''}
+                    ${elementType === 'image' ? `<img src="${content}" />` : ''}
+                    ${elementType === 'video' ? `<video src="${content}" controls></video>` : ''}
+                    ${elementType === 'audio' ? `<audio src="${content}" controls></audio>` : ''}
+                    ${elementType === 'pdf' ? `<embed src="${content}" type="application/pdf" width="100%" height="600px" />` : ''}
                 </p>
         </li>
     `;

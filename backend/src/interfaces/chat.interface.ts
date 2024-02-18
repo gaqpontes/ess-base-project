@@ -3,7 +3,7 @@ export interface IMessage {
     sender: string;
 }
   
-export interface IChat {
+export interface IChat extends Document{
     participants: string[]; 
     messages: IMessage[];
 }
