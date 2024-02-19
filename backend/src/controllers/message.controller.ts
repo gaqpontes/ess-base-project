@@ -73,16 +73,18 @@ class MessageController {
     const messageId = req.params.messageId;
     const messageSent = this.database.getMessage(messageId)
 
+    if (!messageSent?.id) {
+      return new FailureResult({
+          msg: 'Message not found',
+      }).handle(res);
+    }
+    
     if (messageSent?.sender === req.params.sender) {
       const success = this.database.deleteMessage(messageId);
       if (success) {
         return new SuccessResult({
             msg: 'Message deleted successfully',
         }).handle(res);
-      } else {
-          return new FailureResult({
-              msg: 'Message not found',
-          }).handle(res);
       }
     } else {
       return new FailureResult({
