@@ -4,7 +4,7 @@ import fs from 'fs';
 import bcrypt from 'bcrypt';
 import { UserLogin } from '../interfaces/user.login.interface';
 
-const usersFilePath = 'C:/Users/Bia/ess-base-project/backend/src/database/users.json';
+const usersFilePath = './src/database/users.json';
 
 // Função para carregar os usuários do arquivo JSON
 export const loadUsersFromFile = (): UserLogin[] => {
@@ -14,15 +14,6 @@ export const loadUsersFromFile = (): UserLogin[] => {
     } catch (error) {
         console.error('Erro ao carregar usuários do arquivo:', error);
         return [];
-    }
-};
-
-// Função para salvar os usuários no arquivo JSON
-export const saveUsersToFile = (users: UserLogin[]): void => {
-    try {
-        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    } catch (error) {
-        console.error('Erro ao salvar usuários no arquivo:', error);
     }
 };
 

@@ -7,6 +7,7 @@ const messageSchema: Schema = new Schema<IMessage>({
   sender: { type: String, required: true},
   receiver: { type: String, require: true},
   media: { type: Boolean, required: true}
+
 });
 
 const chatSchema: Schema = new Schema<IChat>({

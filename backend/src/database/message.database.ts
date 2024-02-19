@@ -14,7 +14,6 @@ export default class MessagesDatabase {
         }
         return MessagesDatabase.instance;
     }
-
     reset() {
         this.messages = [];
     }
@@ -38,7 +37,6 @@ export default class MessagesDatabase {
             (message.sender === participant2 && message.receiver === participant1)
         );
     }
-
     getMediaConversation(participant1: string, participant2: string) {
         return this.messages.filter(message =>
             ((message.sender === participant1 && message.receiver === participant2) ||
