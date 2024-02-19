@@ -15,10 +15,6 @@ export default class MessagesDatabase {
         return MessagesDatabase.instance;
     }
 
-    reset() {
-        this.messages = [];
-    }
-
     addMessage(message: IMessage) {
         this.messages.push(message);
     }
