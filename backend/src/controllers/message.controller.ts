@@ -1,7 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { SuccessResult } from '../utils/result';
+import { FailureResult, SuccessResult } from '../utils/result';
 import MessagesDatabase from '../database/message.database';
 import { IMessage } from '../interfaces/chat.interface';
+import * as fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+
 
 class MessageController {
   private prefix: string = '/messages';
@@ -14,50 +17,102 @@ class MessageController {
   }
 
   private initRoutes() {    
-    this.router.get(`${this.prefix}/:sender`, (req: Request, res: Response) =>
+    this.router.get(`${this.prefix}/:firstUser/:secondUser`, (req: Request, res: Response) =>
     this.getMessage(req, res));
 
-    this.router.post(`${this.prefix}`, (req: Request, res: Response) =>
+    this.router.post(`${this.prefix}/:sender/:receiver`, (req: Request, res: Response) =>
     this.postMessage(req, res));
 
-    this.router.post(`${this.prefix}/upload`, (req: Request, res: Response) =>
+    this.router.post(`${this.prefix}/:sender/:receiver/upload/:path`, (req: Request, res: Response) =>
     this.postFile(req, res));
+
+    this.router.delete(`${this.prefix}/:sender/:receiver/:id`, (req: Request, res: Response) =>
+    this.deleteMessage(req, res));
   }
 
   private async getMessage(req: Request, res: Response){
-    const sender = req.params.sender;
+    const sender = req.params.firstUser;
+    const receiver = req.params.secondUser;
 
-    const messages = this.database.getMessagesByParticipant(sender);
+    const messages = this.database.getConversation(sender, receiver);
 
     return new SuccessResult({
-      msg: 'Sucessfull get',
+      msg: 'Messages found successfully',
       data: messages,
     }).handle(res);
   }
 
+  private async deleteMessage(req: Request, res: Response) {
+    const messageId = req.params.messageId;
+    const messageSent = this.database.getMessage(messageId)
+
+    if (messageSent?.sender === req.params.sender) {
+      const success = this.database.deleteMessage(messageId);
+      if (success) {
+        return new SuccessResult({
+            msg: 'Message deleted successfully',
+        }).handle(res);
+      } else {
+          return new FailureResult({
+              msg: 'Message not found',
+          }).handle(res);
+      }
+    } else {
+      return new FailureResult({
+        msg: 'Message not sent by you',
+      }).handle(res);
+    }
+
+}
+
   private async postMessage(req: Request, res: Response){
-    const { name, message } = req.body;
-    const info = { name, message };
-    
+    const { message } = req.body;
+    const sender = req.params.sender
+    const receiver = req.params.receiver
+    const messageId = uuidv4();
+
     const messageSent: IMessage = {
-      sender: info.name,
-      content: info.message
+      id: messageId,
+      sender: sender,
+      content: message,
+      receiver: receiver
     }
 
     this.database.addMessage(messageSent);
+    console.log(this.database);
 
     return new SuccessResult({
         msg: 'Message sent successfully',
-        data: {name, message},
+        data: { sender, message, receiver, messageId},
       }).handle(res);
   }
 
   private async postFile(req: Request, res: Response){
-    const { name, content } = req.body;
-    return new SuccessResult({
-        msg: 'File sent successfully',
-        data: {name, content},
-    }).handle(res);
+    const file = (`./src/upload/${req.params.path}`);
+
+    fs.readFile(file, 'base64', (err, data) => {
+      if (err) {
+        console.error('Error reading file:', err);
+        return;
+      }
+      const sender = req.params.sender
+      const receiver = req.params.receiver
+      const messageId = uuidv4();
+
+      const messageSent: IMessage = {
+        id: messageId,
+        sender: sender,
+        content: data,
+        receiver: receiver
+      }
+  
+      this.database.addMessage(messageSent);
+
+      return new SuccessResult({
+          msg: 'File sent successfully',
+          data: {sender, data, receiver, messageId},
+      }).handle(res);
+    });
 }
 }
 

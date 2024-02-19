@@ -19,14 +19,24 @@ export default class MessagesDatabase {
         this.messages.push(message);
     }
 
-    getMessagesByParticipant(participant: string) {
-        return this.messages.filter(message => message.sender === participant);
+    deleteMessage(id: string) {
+        const index = this.messages.findIndex(message => message.id === id);
+        if (index !== -1) {
+            this.messages.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+    
+    getConversation(participant1: string, participant2: string) {
+        return this.messages.filter(message =>
+            (message.sender === participant1 && message.receiver === participant2) ||
+            (message.sender === participant2 && message.receiver === participant1)
+        );
     }
 
-    getMessagesBetweenParticipants(participant1: string, participant2: string) {
-        return this.messages.filter(message =>
-            message.sender === participant1 || message.sender === participant2
-        );
+    getMessage(id: string): IMessage | undefined {
+        return this.messages.find(message => message.id === id);
     }
 
 }

@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import http from 'http';
 import socket from 'socket.io';
 import app from './app';
