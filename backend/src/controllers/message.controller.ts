@@ -20,6 +20,9 @@ class MessageController {
     this.router.get(`${this.prefix}/:firstUser/:secondUser`, (req: Request, res: Response) =>
     this.getMessage(req, res));
 
+    this.router.post(`${this.prefix}/:sender/:receiver/upload/`, (req: Request, res: Response) =>
+    this.getMedia(req, res));
+
     this.router.post(`${this.prefix}/:sender/:receiver`, (req: Request, res: Response) =>
     this.postMessage(req, res));
 
@@ -36,10 +39,34 @@ class MessageController {
 
     const messages = this.database.getConversation(sender, receiver);
 
-    return new SuccessResult({
-      msg: 'Messages found successfully',
-      data: messages,
-    }).handle(res);
+    if (messages) {
+      return new SuccessResult({
+        msg: 'Messages found successfully',
+        data: messages,
+      }).handle(res);
+    } else {
+      return new FailureResult({
+        msg: "No messages exchanged"
+      }).handle(res);
+    }
+  }
+
+  private async getMedia(req: Request, res: Response){
+    const sender = req.params.firstUser;
+    const receiver = req.params.secondUser;
+
+    const messages = this.database.getMediaConversation(sender, receiver);
+
+    if (messages) {
+      return new SuccessResult({
+        msg: 'Medias found successfully',
+        data: messages,
+      }).handle(res);
+    } else {
+      return new FailureResult({
+        msg: "No medias exchanged"
+      }).handle(res);
+    }
   }
 
   private async deleteMessage(req: Request, res: Response) {
@@ -75,7 +102,8 @@ class MessageController {
       id: messageId,
       sender: sender,
       content: message,
-      receiver: receiver
+      receiver: receiver,
+      media: false
     }
 
     this.database.addMessage(messageSent);
@@ -103,7 +131,8 @@ class MessageController {
         id: messageId,
         sender: sender,
         content: data,
-        receiver: receiver
+        receiver: receiver,
+        media: true
       }
   
       this.database.addMessage(messageSent);

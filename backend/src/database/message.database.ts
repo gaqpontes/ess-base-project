@@ -35,6 +35,13 @@ export default class MessagesDatabase {
         );
     }
 
+    getMediaConversation(participant1: string, participant2: string) {
+        return this.messages.filter(message =>
+            ((message.sender === participant1 && message.receiver === participant2) ||
+            (message.sender === participant2 && message.receiver === participant1)) && message.media === true
+        );
+    }
+
     getMessage(id: string): IMessage | undefined {
         return this.messages.find(message => message.id === id);
     }

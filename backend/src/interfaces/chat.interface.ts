@@ -3,6 +3,7 @@ export interface IMessage {
     sender: string;
     receiver: string;
     id: string;
+    media: boolean;
 }
   
 export interface IChat extends Document{
