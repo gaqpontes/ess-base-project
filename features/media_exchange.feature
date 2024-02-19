@@ -43,11 +43,45 @@ Scenario: Recebimento de mídia bem sucedido
     Then "Leticia" vê a mensagem "Download concluído com sucesso" 
     And "Leticia" vê a mídia "foto.png"
 
-Scenario: Recebimento de mídia bem sucedido
+Scenario: Recebimento de mídia mal sucedido
     Given o usuário "Leticia" está na página "Conversa com Bia"
+    And "Letícia" vê "0" mídias
     And "Leticia" vê a opção "Fazer download de mídia"
     When "Leticia" seleciona "Fazer download de mídia"
     And "Leticia" seleciona "Cancelar"
     Then "Leticia" vê a mensagem "Operação cancelada" 
-    And "Leticia" vê a mídia "foto.png"
+    And "Leticia" vê "0" mídias
+
+Scenario: Obter histórico de envio de mídias com sucesso
+    Given o método "getMediaConversation" retorna uma lista de mídias
+    And a mídia com id "123", media "true", sender "Bia" e receiver "Leticia" está na lista 
+    When uma requisão "GET" for enviada para "/Bia/Leticia/upload"
+    Then o status da resposta deve ser "200"
+    And o JSON da resposta deve conter uma lista de mídias
+    And a mídia com id "123", media "true", sender "bia" e receiver "leticia" deve estar na lista 
+
+Scenario: Obter histórico de envio de mídias sem sucesso
+    Given o método "getMediaConversation" retorna uma lista de mídias
+    And há "0" mídias na lista
+    When uma requisão "GET" for enviada para "/Bia/Leticia/upload"
+    Then o status da resposta deve ser "500"
+    And o JSON da resposta deve conter a mensagem "No medias exchanged"
+
+Scenario: Remoção de mídia inexistente
+    Given o método "getMessage" retorna "null"
+    When uma requisão "DELETE" for enviada para "/Bia/Leticia/123"
+    Then o status da resposta deve ser "500"
+    And o JSON da resposta deve conter a mensagem "Message not found"
+
+Scenario: Remoção de mídia enviada por outro usuário
+    And o método "getMessage" retorna uma mídia com id "123", media "true", sender "Bia" e receiver "Leticia"
+    When uma requisão "DELETE" for enviada para "/Leticia/Bia/123"
+    Then o status da resposta deve ser "500"
+    And o JSON da resposta deve conter a mensagem "Message not sent by you"
+
+
+
+
+
+
 
