@@ -12,6 +12,7 @@ import userRoutes from './routes/user.route';
 import loginRouter from './routes/user_login.route'; 
 import updateRouter from './routes/update.route';
 import deleteRouter from './routes/delete.user.router';
+import chatsRouter from './routes/chats.router';
 
 const app: express.Express = express();
 
@@ -32,7 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/users', loginRouter);
 app.use('/api/users', updateRouter); 
 app.use('/api/users', deleteRouter); 
-
+app.use('/api/chats', chatsRouter);
 
 // Rota para obter lista de contatos
 app.get('/api/contacts', async (req, res, next) => {

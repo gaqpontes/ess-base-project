@@ -106,7 +106,6 @@ export const recoverPassword = async (email: string, password: string, token: st
 
             // Remove o token de recuperação após o uso
             recoveryTokensDatabase.deleteRecoveryTokenByEmail(email);
-            console.log(recoveryTokensDatabase.getAllRecoveryTokens());
             // Salva os usuários atualizados no arquivo JSON
             saveUsersToFile(users);
         }

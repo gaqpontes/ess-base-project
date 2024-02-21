@@ -7,12 +7,12 @@ const messageSchema: Schema = new Schema<IMessage>({
   sender: { type: String, required: true},
   receiver: { type: String, require: true},
   media: { type: Boolean, required: true}
-
 });
 
 const chatSchema: Schema = new Schema<IChat>({
   participants: [{type: String, required: true}],
-  messages: [messageSchema],
+  fixed: { type: Boolean, default: false },
+  messages: [messageSchema]
 });
 
 export { messageSchema, chatSchema };

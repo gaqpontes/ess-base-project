@@ -4,43 +4,72 @@ Feature: Lista de Conversas Recentes
     So that posso acompanhar as interações mais recentes
 
 Scenario: Fixar uma Conversa no Topo
-    Given o usuário está na página de "Conversas Recentes"
-    And visualiza uma conversa
-    When seleciona a opção para fixar essa conversa
-    Then a conversa é movida para o topo da lista
-    And é mantida lá independentemente da ordem cronológica
-    And outras conversas são ajustadas de acordo
-    And a conversa fixada é destacada como tal
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy"
+    And "Pedro" vê a opção "fixar conversa" em todas as conversas
+    When "Pedro" seleciona a opção "fixar conversa" na conversa com "Bia"
+    Then "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Bia", "Letícia", "Jessy"
 
-Scenario: Excluir uma Conversa
-    Given o usuário está na página de "Conversas Recentes"
-    And visualiza uma conversa
-    When seleciona a opção para excluir essa conversa
-    And confirma a exclusão
-    And visualiza uma conversa limitada
-    When opta por excluí-la
-    And o usuário confirma a exclusão
-    Then a conversa selecionada é removida da lista
-    And não aparece mais na tela de "Conversas Recentes"
-    And outras conversas são ajustadas de acordo
+Scenario: Desfixar uma Conversa
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas fixadas listadas nesta ordem: "Bia", "Letícia", "Jessy"
+    And "Pedro" vê a opção "desfixar conversa" na conversa com "Bia"
+    When "Pedro" seleciona a opção "desfixar conversa" na conversa com "Bia"
+    Then "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas fixadas listadas nesta ordem: "Letícia", "Bia", "Jessy"
+
+Scenario: Excluir uma Conversa (Confirmada)
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy"
+    And "Pedro" vê a opção "excluir conversa" em todas as conversas
+    When "Pedro" seleciona a opção "excluir conversa" na conversa com "Bia"
+    Then "Pedro" recebe uma mensagem de confirmação "Deseja excluir sua conversa com 'Bia'"?
+    And "Pedro" vê as opções "confirmar" e "cancelar"
+    When "Pedro" seleciona a opção "confirmar"
+    Then "Pedro" é redirecionado à página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Jessy"
+
+Scenario: Excluir uma Conversa (Cancelada)
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy"
+    And "Pedro" vê a opção "excluir conversa" em todas as conversas
+    When "Pedro" seleciona a opção "excluir conversa" na conversa com "Bia"
+    Then "Pedro" recebe uma mensagem de confirmação "Deseja excluir sua conversa com 'Bia'"?
+    And "Pedro" vê as opções "confirmar" e "cancelar"
+    When "Pedro" seleciona a opção "cancelar"
+    Then "Pedro" é redirecionado à página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy"
 
 Scenario: Selecionar e Abrir uma Conversa
-    Given o usuário está na página de "Conversas Recentes"
-    And visualiza uma conversa limitada
-    When seleciona a conversa desejada
-    Then é direcionado para a tela da conversa
-    And pode visualizar o nome do contato, foto e histórico completo de mensagens
-    And tem a capacidade de enviar novas mensagens na conversa em andamento
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy"
+    When "Pedro" seleciona a conversa com "Bia"
+    Then "Pedro" está na página da conversa com "Bia"
 
-Scenario: Buscar uma Conversa
-    Given o usuário está na página de "Conversas Recentes" com várias conversas listadas
-    When utiliza a função de busca para encontrar uma conversa específica
-    Then os resultados exibem a conversa relevante
-    And filtram as outras conversas de acordo com a pesquisa realizada
+Scenario: Buscar uma Conversa (mais de um resultado)
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy", "Bárbara"
+    And "Pedro" vê a opção "pesquisar conversa"
+    When "Pedro" seleciona a opção "pesquisar conversa"
+    And "Pedro" insere a palavra-chave "B"
+    Then "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas em ordem alfabética: "Bárbara", "Bia"
 
-Scenario: Desfixar uma Conversa do Topo
-    Given o usuário está na página de "Conversas Recentes"
-    And visualiza uma conversa fixada no topo da lista
-    When seleciona a opção para desfixar essa conversa
-    Then a conversa é movida para a posição em que segue a ordem cronológica
-    And outras conversas são ajustadas de acordo
+Scenario: Buscar uma Conversa (um resultado e acentuações)
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy", "Bárbara"
+    And "Pedro" vê a opção "pesquisar conversa"
+    When "Pedro" seleciona a opção "pesquisar conversa"
+    And "Pedro" insere a palavra-chave "Ba"
+    Then "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas em ordem alfabética: "Bárbara"
+
+Scenario: Buscar uma Conversa (nenhum resultado)
+    Given o usuário "Pedro" está na página "conversas recentes"
+    And "Pedro" vê as seguintes conversas listadas nesta ordem: "Letícia", "Bia", "Jessy", "Bárbara"
+    And "Pedro" vê a opção "pesquisar conversa"
+    When "Pedro" seleciona a opção "pesquisar conversa"
+    And "Pedro" insere a palavra-chave "Bab"
+    Then "Pedro" está na página "conversas recentes"
+    And "Pedro" recebe uma mensagem "Nenhum resultado encontrado"

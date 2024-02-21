@@ -34,7 +34,5 @@ defineFeature(feature, (test) => {
     then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
       expect(response.status).toBe(parseInt(statusCode, 10));
     });
-
-    // Adapte os testes conforme necessário para refletir a lógica do seu aplicativo
   });
 });

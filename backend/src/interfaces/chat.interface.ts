@@ -8,5 +8,6 @@ export interface IMessage {
   
 export interface IChat extends Document{
     participants: string[]; 
+    fixed: boolean;
     messages: IMessage[];
 }
