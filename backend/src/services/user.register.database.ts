@@ -67,4 +67,11 @@ export default class UserDatabase {
     }
     return undefined;
   }
+
+  clear(): void {
+    // Limpa o array de usuários
+    this.users = [];
+    // Salva o estado vazio no arquivo
+    this.saveUsersToFile();
+  }
 }
