@@ -12,34 +12,25 @@ defineFeature(feature, (test) => {
   let userDatabase: UserDatabase;
 
   beforeEach(() => {
-    // Como a classe UserDatabase espera um caminho de arquivo, podemos
-    // passar um caminho fictício apenas para satisfazer a assinatura do construtor
     userDatabase = new UserDatabase('users.json');
-    // Certifique-se de que o método reset existe na classe UserDatabase
     userDatabase.clear();
   });
 
   test('Criar um novo usuário com sucesso', ({ given, when, then, and }) => {
-    given(/^não existe um usuário com email "(.*)" no banco de dados$/, async (email) => {
-      // Verifica se não existe nenhum usuário com o email fornecido no banco de dados
+    given(/^não existe um usuário com nome "(.*)", email "(.*)", username "(.*)" e senha "(.*)" no banco de dados$/, (name, email, username, password) => {
       const existingUser = userDatabase.findByEmail(email);
-      expect(existingUser).toBeUndefined(); // Espera-se que não haja usuário com o email fornecido
+      expect(existingUser).toBeUndefined();
     });
 
-    when(/^uma requisição "(.*)" for enviada para "(.*)" com nome "(.*)", email "(.*)", username "(.*)" e senha "(.*)"$/, async (method, url, name, email, username, password) => {
-      response = await request.post(url).send({
-        name: name,
-        email: email,
-        username: username,
-        password: password
-      });
+    when(/^uma requisição POST for enviada para "([^"]*)" com nome "([^"]*)", email "([^"]*)", username "([^"]*)" e senha "([^"]*)"$/, async (url, name, email, username, password) => {
+      userDatabase.createUser(name,email,username,password)
     });
 
-    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+    then(/^o status da resposta deve ser "([^"]*)"$/, (statusCode) => {
       expect(response.status).toBe(parseInt(statusCode, 10));
     });
 
-    and(/^o JSON da resposta deve conter o nome "(.*)", email "(.*)", username "(.*)", senha "(.*)" e uma mensagem de sucesso "(.*)"$/, (name, email, username, password, successMessage) => {
+    and(/^o JSON da resposta deve conter o nome "([^"]*)", email "([^"]*)", username "([^"]*)" e senha "([^"]*)" e uma mensagem de sucesso "([^"]*)"$/, (name, email, username, password, successMessage) => {
       expect(response.body.name).toBe(name);
       expect(response.body.email).toBe(email);
       expect(response.body.username).toBe(username);
@@ -50,21 +41,26 @@ defineFeature(feature, (test) => {
 
   test('Tentar criar um usuário com um email que já está registrado', ({ given, when, then, and }) => {
     given(/^existe um usuário com email "(.*)" no banco de dados$/, async (email) => {
-      // Aqui você pode adicionar lógica para simular que o usuário já existe
-      // Verifique se o método findByEmail ou algum método semelhante está disponível na classe UserDatabase
+      const existingUser: IUser = {
+        name: 'João Silva',
+        email: email,
+        username: 'joao123',
+        password: '123'
+      };
+      userDatabase.insert(existingUser);
     });
 
-    when(/^uma requisição "(.*)" for enviada para "(.*)" com email "(.*)"$/, async (method, url, email) => {
+    when(/^uma requisição "([^"]*)" for enviada para "([^"]*)" com email "([^"]*)"$/, async (method, url, email) => {
       response = await request.post(url).send({
         email: email
       });
     });
 
-    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+    then(/^o status da resposta deve ser "([^"]*)"$/, (statusCode) => {
       expect(response.status).toBe(parseInt(statusCode, 10));
     });
 
-    and(/^a resposta deve conter o detalhe "(.*)"$/, (detail) => {
+    and(/^a resposta deve conter o detalhe "([^"]*)"$/, (detail) => {
       expect(response.body.detail).toBe(detail);
     });
   });
