@@ -21,24 +21,29 @@ defineFeature(feature, (test) => {
       const existingUser = userDatabase.findByEmail(email);
       expect(existingUser).toBeUndefined();
     });
-
-    when(/^uma requisição POST for enviada para "([^"]*)" com nome "([^"]*)", email "([^"]*)", username "([^"]*)" e senha "([^"]*)"$/, async (url, name, email, username, password) => {
-      userDatabase.createUser(name,email,username,password)
+  
+    when(/^uma requisição POST for enviada para "(.*)" com nome "(.*)", email "(.*)", username "(.*)" e senha "(.*)"$/, async (url, name, email, username, password) => {
+      response = await request.post(url).send({
+        name: name,
+        email: email,
+        username: username,
+        password: password
+      });
     });
-
-    then(/^o status da resposta deve ser "([^"]*)"$/, (statusCode) => {
+  
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
       expect(response.status).toBe(parseInt(statusCode, 10));
     });
-
-    and(/^o JSON da resposta deve conter o nome "([^"]*)", email "([^"]*)", username "([^"]*)" e senha "([^"]*)" e uma mensagem de sucesso "([^"]*)"$/, (name, email, username, password, successMessage) => {
-      expect(response.body.name).toBe(name);
-      expect(response.body.email).toBe(email);
-      expect(response.body.username).toBe(username);
-      expect(response.body.password).toBe(password);
+  
+    and(/^o JSON da resposta deve conter o nome "(.*)", email "(.*)", username "(.*)" e senha "(.*)" e uma mensagem de sucesso "(.*)"$/, (name, email, username, password, successMessage) => {
+      expect(response.body.user.name).toBe(name);
+      expect(response.body.user.email).toBe(email);
+      expect(response.body.user.username).toBe(username);
+      expect(response.body.user.password).toBe(password);
       expect(response.body.message).toBe(successMessage);
     });
   });
-
+  
   test('Tentar criar um usuário com um email que já está registrado', ({ given, when, then, and }) => {
     given(/^existe um usuário com email "(.*)" no banco de dados$/, async (email) => {
       const existingUser: IUser = {
@@ -49,19 +54,19 @@ defineFeature(feature, (test) => {
       };
       userDatabase.insert(existingUser);
     });
-
-    when(/^uma requisição "([^"]*)" for enviada para "([^"]*)" com email "([^"]*)"$/, async (method, url, email) => {
+  
+    when(/^uma requisição POST for enviada para "(.*)" com email "(.*)"$/, async (url, email) => {
       response = await request.post(url).send({
         email: email
       });
     });
-
-    then(/^o status da resposta deve ser "([^"]*)"$/, (statusCode) => {
+  
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
       expect(response.status).toBe(parseInt(statusCode, 10));
     });
-
-    and(/^a resposta deve conter o detalhe "([^"]*)"$/, (detail) => {
-      expect(response.body.detail).toBe(detail);
+  
+    and(/^a resposta deve conter o detalhe "(.*)"$/, (detail) => {
+      expect(response.body.message).toBe(detail);
     });
-  });
+  });  
 });
