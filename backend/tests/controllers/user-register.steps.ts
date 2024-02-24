@@ -12,7 +12,7 @@ defineFeature(feature, (test) => {
   let userDatabase: UserDatabase;
 
   beforeEach(() => {
-    userDatabase = new UserDatabase('users.json');
+    userDatabase = UserDatabase.getInstance("src/database/users.json");
     userDatabase.clear();
   });
 
@@ -68,5 +68,5 @@ defineFeature(feature, (test) => {
     and(/^a resposta deve conter o detalhe "(.*)"$/, (detail) => {
       expect(response.body.message).toBe(detail);
     });
-  });  
+  }); 
 });

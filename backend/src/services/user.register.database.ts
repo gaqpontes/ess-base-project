@@ -4,6 +4,7 @@ import { IUser } from '../interfaces/user.interface';
 
 export default class UserDatabase {
   private usersFilePath: string;
+  private static instance: UserDatabase | null = null; // Alteração na declaração da instância estática
 
   constructor(usersFilePath: string) {
     this.usersFilePath = usersFilePath;
@@ -81,5 +82,12 @@ export default class UserDatabase {
   clear(): void {
     // Limpa os dados do arquivo
     this.saveUsers([]);
+  }
+  // Método estático para obter a instância única da classe
+  static getInstance(usersFilePath: string): UserDatabase {
+    if (!UserDatabase.instance) {
+      UserDatabase.instance = new UserDatabase(usersFilePath);
+    }
+    return UserDatabase.instance;
   }
 }
