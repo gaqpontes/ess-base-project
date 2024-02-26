@@ -90,7 +90,7 @@ export const searchChats = (keyword: string) => {
 
         // Verificar se há resultados da busca
         if (conversasFiltradas.length === 0) {
-            return 'Nenhum resultado encontrado';
+            throw new Error('Nenhum resultado encontrado');
         } 
         
         return conversasFiltradas;
@@ -99,7 +99,7 @@ export const searchChats = (keyword: string) => {
     }
 }
 
-export const fixConversation = (id: string) => {
+export const fixChat = (id: string) => {
     try {
         let conversas: any[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
@@ -122,7 +122,7 @@ export const fixConversation = (id: string) => {
     }
 };
 
-export const unfixConversation = (id: string) => {
+export const unfixChat = (id: string) => {
     try {
         let conversas: any[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
@@ -143,4 +143,27 @@ export const unfixConversation = (id: string) => {
     } catch (error: any) {
         throw new Error('Erro ao desafixar a conversa: ' + (error as Error).message);
     }
+};
+
+export const resetChats = () => {
+    try {
+        // Cria um array vazio para substituir os chats existentes
+        const emptyChats: IChat[] = [];
+        
+        // Escreve o array vazio de volta no arquivo, limpando seu conteúdo
+        fs.writeFileSync(filePath, JSON.stringify(emptyChats));
+
+        return 'Chats resetados com sucesso.';
+    } catch (error: any) {
+        throw new Error('Erro ao resetar os chats: ' + (error as Error).message);
+    }
+};
+
+export default {
+    addChat,
+    getChats,
+    deleteChat,
+    searchChats,
+    fixChat,
+    unfixChat
 };

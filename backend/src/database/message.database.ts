@@ -19,6 +19,11 @@ export default class MessagesDatabase {
     }
 
     addMessage(message: IMessage) {
+        // Verifique se o valor de timestamp já é um objeto Date
+        if (typeof message.timestamp === 'string') {
+            // Se for uma string, converta-a para um objeto Date
+            message.timestamp = new Date(message.timestamp);
+        }
         this.messages.push(message);
     }
 

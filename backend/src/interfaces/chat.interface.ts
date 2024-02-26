@@ -4,9 +4,11 @@ export interface IMessage {
     receiver: string;
     id: string;
     media: boolean;
+    timestamp: Date;
 }
   
-export interface IChat extends Document{
+export interface IChat {
+    id: string;
     participants: string[]; 
     fixed: boolean;
     messages: IMessage[];

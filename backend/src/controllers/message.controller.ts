@@ -100,12 +100,15 @@ class MessageController {
     const receiver = req.params.receiver
     const messageId = uuidv4();
 
+    const timestampNumber = Date.now();
+
     const messageSent: IMessage = {
       id: messageId,
       sender: sender,
       content: message,
       receiver: receiver,
-      media: false
+      media: false,
+      timestamp: new Date(timestampNumber)
     }
 
     this.database.addMessage(messageSent);
@@ -129,12 +132,15 @@ class MessageController {
       const receiver = req.params.receiver
       const messageId = uuidv4();
 
+      const timestampNumber = Date.now();
+
       const messageSent: IMessage = {
         id: messageId,
         sender: sender,
         content: data,
         receiver: receiver,
-        media: true
+        media: true,
+        timestamp: new Date(timestampNumber)
       }
   
       this.database.addMessage(messageSent);
