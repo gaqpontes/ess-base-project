@@ -48,7 +48,7 @@ const LoginForm = () => {
           <button type="submit">Login</button>
         </form>
         <div className={styles['message-container']}>
-          {loginMessage && <div className={styles.message}>{loginMessage}</div>}
+          {loginMessage && <div>{loginMessage}</div>}
         </div>
       </div>
     </div>

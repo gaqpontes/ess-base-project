@@ -4,7 +4,7 @@ import ListTests from "./app/home/pages/ListTests";
 import HelloWorld from "./app/home/pages/HelloWorld";
 import UserRegister from "./app/home/pages/UserRegister";
 import UserLogin from "./app/home/pages/UserLogin";
-
+import UserUpdate from "./app/home/pages/UserUpdate";
 
 
 const router = createBrowserRouter([
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     Component: UserLogin,
+  },
+  {
+    path: "/update",
+    Component: UserUpdate,
   },
 ]);
 
