@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     Component: HelloWorld,
   },
   {
-    path: "/user-register",
+    path: "/register",
     Component: UserRegister,
   },
 ]);
