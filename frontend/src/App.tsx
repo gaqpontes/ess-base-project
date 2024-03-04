@@ -5,7 +5,7 @@ import HelloWorld from "./app/home/pages/HelloWorld";
 import UserRegister from "./app/home/pages/UserRegister";
 import UserLogin from "./app/home/pages/UserLogin";
 import UserUpdate from "./app/home/pages/UserUpdate";
-
+import UserDelete from "./app/home/pages/UserDelete";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/update",
     Component: UserUpdate,
+  },
+  {
+    path: "/delete",
+    Component: UserDelete,
   },
 ]);
 
