@@ -40,10 +40,20 @@
     margin-top: 5px;
     font-size: 14px;
   }
-  .successMessage {
-    margin-top: 10px; /* Espaço entre a mensagem e os campos de entrada */
-    font-size: 18px; /* Tamanho da fonte maior */
-    color: blue; /* Cor azul */
-    text-align: center; /* Centraliza o texto */
-    font-family: Arial, sans-serif; /* Altera a fonte para Arial */
+  .message {
+    text-align: center; /* Centraliza o texto horizontalmente */
+    color: rgb(35, 35, 77); /* Define a cor do texto como azul */
+    font-size: 1.2rem; /* Aumenta o tamanho da fonte */
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif, sans-serif; /* Define a família da fonte como Arial */
+  }
+  .messageContainer {
+    text-align: center; /* Centraliza o texto horizontalmente */
+    padding: 20px; /* Adiciona um preenchimento interno maior */
+    margin-top: 20px; /* Adiciona uma margem superior para separar dos campos de entrada */
+    border: 1px solid rgb(28, 28, 77); /* Adiciona uma borda sólida azul */
+    border-radius: 5px; /* Adiciona uma borda arredondada */
+    background-color: rgb(201, 221, 228); /* Define a cor de fundo como azul claro */
+    max-width: 300px; /* Define a largura máxima do container */
+    margin-left: auto; /* Centraliza horizontalmente */
+    margin-right: auto; /* Centraliza horizontalmente */
   }

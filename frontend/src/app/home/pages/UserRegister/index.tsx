@@ -17,7 +17,7 @@ const RegistrationForm: React.FC = () => {
     password: ''
   });
 
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registrationMessage, setRegistrationMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,12 +33,12 @@ const RegistrationForm: React.FC = () => {
       // Enviar os dados para o backend via Axios
       const response = await axios.post('http://localhost:5001/api/users/register', formData);
       console.log('Response:', response.data);
-      // Definir o estado para indicar o registro bem-sucedido
-      setRegistrationSuccess(true);
-      // Lógica adicional após o registro bem-sucedido (por exemplo, redirecionar para outra página)
-    } catch (error) {
-      console.error('Error registering user:', error);
-      // Lógica para lidar com erros de registro (por exemplo, exibir mensagem de erro para o usuário)
+      // Definir a mensagem recebida do backend
+      setRegistrationMessage(response.data.message);
+    } catch (error: any) { // Convertendo para tipo 'any'
+      console.error('Erro ao registrar usuário:', error);
+      // Se houver um erro, definir a mensagem de erro correspondente
+      setRegistrationMessage(error.response?.data.message || 'Erro desconhecido');
     }
   };
 
@@ -51,9 +51,9 @@ const RegistrationForm: React.FC = () => {
         <input type="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
         <button type="submit" className={styles.button}>Registrar</button>
       </form>
-      {registrationSuccess && (
-        <div className={styles.successMessage}>
-          <p>Registro bem-sucedido!</p>
+      {registrationMessage && (
+        <div className={styles.messageContainer}>
+          <div className={styles.message}>{registrationMessage}</div>
         </div>
       )}
     </div>
