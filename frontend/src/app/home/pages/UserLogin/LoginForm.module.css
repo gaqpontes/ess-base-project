@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 100vh; /* Define a altura do container para ocupar toda a altura da tela */
+  }
+  
+  .form {
+    width: 400px; /* Define a largura do formulário */
+    padding: 20px; /* Adiciona um preenchimento interno */
+    border: 3px solid #252531; /* Adiciona uma borda ao redor do formulário */
+    border-radius: 5px; /* Adiciona uma borda arredondada */
+    background-color: rgb(151, 207, 228); /* Define a cor de fundo como azul claro */
+  }
+  
+  .form input {
+    width: 100%; /* Define a largura dos campos de entrada como 100% */
+    margin-bottom: 10px; /* Adiciona uma margem inferior aos campos de entrada */
+  }
+  .form h2 {
+    margin-bottom: 30px; /* Adiciona uma margem inferior ao título "Login" */
+    text-align: center; /* Centraliza o texto horizontalmente */
+  }
+  .message-container {
+    border-top: 2px solid #1a1b2e; /* Adiciona uma borda superior */
+    border-bottom: 2px solid #1a1b2e;
+    border-left: 2px solid #1a1b2e;
+    border-right: 2px solid #1a1b2e;
+    padding-top: 10px; /* Adiciona um preenchimento superior */
+    margin-top: 10px; /* Adiciona uma margem superior */
+    background-color: #e6f7ff; /* Define a cor de fundo */
+  }
+  
+  .message {
+    font-family: Arial, sans-serif; /* Define a fonte */
+    font-size: 18px; /* Define o tamanho da fonte */
+    text-align: center; /* Centraliza o texto */
+  }

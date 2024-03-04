@@ -3,6 +3,8 @@ import CreateTest from "./app/home/pages/CreateTest";
 import ListTests from "./app/home/pages/ListTests";
 import HelloWorld from "./app/home/pages/HelloWorld";
 import UserRegister from "./app/home/pages/UserRegister";
+import UserLogin from "./app/home/pages/UserLogin";
+
 
 
 const router = createBrowserRouter([
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     Component: UserRegister,
+  },
+  {
+    path: "/login",
+    Component: UserLogin,
   },
 ]);
 
