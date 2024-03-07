@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from './DeleteForm.module.css'
 
 interface DeleteFormData {
   email: string;
@@ -39,19 +40,22 @@ const DeleteUserForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Delete User</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+    <div className={styles.container}>
+      <div className={styles.UserDelete}><h2>Delete User</h2></div>
+      <div className={styles.warningMessage}><h3>Are you sure you want to delete your user account?</h3></div>
+      <div className={styles.fieldContainer}>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.inputContainer}>
+              <label htmlFor="confirmEmail" className={styles.inputLabel}>Confirm Email:</label>
+              <input type="email" id="confirmEmail" name="email" placeholder="Confirm Email" value={formData.email} onChange={handleChange} required className={styles.input} />
+            </div>
+            <div className={styles.inputContainer}>
+              <label htmlFor="confirmPassword" className={styles.inputLabel}>Confirm Password:</label>
+              <input type="password" id="confirmPassword" name="password" placeholder="Confirm Password" value={formData.password} onChange={handleChange} required className={styles.input} />
+            </div>
+            <button type="submit" className={`${styles.button} ${styles.deleteButton}`}>Delete</button>
+          </form>
         </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-        </div>
-        <button type="submit">Delete</button>
-      </form>
       <div>{deleteMessage}</div>
     </div>
   );
