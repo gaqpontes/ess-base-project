@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './RegistrationForm.module.css'; // Importando estilos CSS
 
+
 interface RegistrationFormData {
   name: string;
   email: string;
