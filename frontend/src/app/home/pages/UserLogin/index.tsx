@@ -34,23 +34,28 @@ const LoginForm = () => {
 
   return (
     <div className={styles.container}> {/* Adiciona a classe container */}
-      <div className={styles.form}> {/* Adiciona a classe form */}
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email:</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-        <div className={styles['message-container']}>
-          {loginMessage && <div>{loginMessage}</div>}
+        <div className={styles.LoginText}> {/* Adiciona a classe login-container */}
+          <h2>Login</h2>
         </div>
-      </div>
+        <div className={styles.EnterEmailAndPassword}> {/* Div para o nome do login */}
+          <h5>Enter your email below to login to your account</h5>
+        </div>
+        <div className={styles.fieldContainer}>
+          <form onSubmit={handleSubmit}>
+          <div className={styles.inputContainer}>
+            <label htmlFor="email" className={styles.inputLabel}>Email</label>
+            <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="password" className={styles.inputLabel}>Password</label>
+            <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
+          </div>
+          <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Login</button>
+          </form>
+            <div className={styles['message-container']}>
+              {loginMessage && <div>{loginMessage}</div>}
+          </div>
+        </div>    
     </div>
   );
 };
