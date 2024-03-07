@@ -43,19 +43,40 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input type="text" name="name" placeholder="Nome" value={formData.name} onChange={handleChange} className={styles.input} />
-        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className={styles.input} />
-        <input type="text" name="username" placeholder="Nome de usuário" value={formData.username} onChange={handleChange} className={styles.input} />
-        <input type="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
-        <button type="submit" className={styles.button}>Registrar</button>
-      </form>
-      {registrationMessage && (
-        <div className={styles.messageContainer}>
-          <div className={styles.message}>{registrationMessage}</div>
-        </div>
-      )}
+    <div className={styles.container}>
+      <div className={styles.CreateAccount}>Create an account</div>
+      <div className={styles.alreadyHaveAccountContainer}>
+        <p className={styles.alreadyHaveAccountText}>
+          Already have an account?{' '}
+          <a href="/login" className={styles.underline}>Login here</a>
+        </p>
+      </div>
+      <div className={styles.fieldContainer}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputContainer}>
+            <label htmlFor="name" className={styles.inputLabel}>Name</label>
+            <input type="text" id="name" name="name" placeholder="Nome" value={formData.name} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="email" className={styles.inputLabel}>Email</label>
+            <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="username" className={styles.inputLabel}>Username</label>
+            <input type="text" id="username" name="username" placeholder="Nome de usuário" value={formData.username} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="password" className={styles.inputLabel}>Password</label>
+            <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
+          </div>
+          <button type="submit" className={styles.button}>Sign in</button>
+        </form>
+        {registrationMessage && (
+          <div className={styles.messageContainer}>
+            <div className={styles.message}>{registrationMessage}</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
