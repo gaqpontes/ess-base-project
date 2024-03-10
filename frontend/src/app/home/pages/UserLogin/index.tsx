@@ -33,11 +33,11 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={styles.container}> {/* Adiciona a classe container */}
-        <div className={styles.LoginText}> {/* Adiciona a classe login-container */}
+    <div className={styles.container}>
+        <div className={styles.LoginText}>
           <h2>Login</h2>
         </div>
-        <div className={styles.EnterEmailAndPassword}> {/* Div para o nome do login */}
+        <div className={styles.EnterEmailAndPassword}>
           <h5>Enter your email below to login to your account</h5>
         </div>
         <div className={styles.fieldContainer}>
@@ -49,15 +49,17 @@ const LoginForm = () => {
           <div className={styles.inputContainer}>
             <label htmlFor="password" className={styles.inputLabel}>Password</label>
             <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
+            {/* Move o message-container para dentro da inputContainer */}
+            <div className={styles.message}>
+              {loginMessage && <div>{loginMessage}</div>}
+            </div>
           </div>
           <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Login</button>
           </form>
-            <div className={styles['message-container']}>
-              {loginMessage && <div>{loginMessage}</div>}
-          </div>
         </div>    
     </div>
-  );
+);
+
 };
 
 export default LoginForm;

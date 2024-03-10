@@ -70,16 +70,16 @@ const RegistrationForm: React.FC = () => {
             <label htmlFor="password" className={styles.inputLabel}>Password</label>
             <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
           </div>
+          {registrationMessage && (
+            <div>
+              <div className={styles.messageContainer}>{registrationMessage}</div>
+            </div>
+          )}
           <button type="submit" className={styles.button}>Sign in</button>
         </form>
-        {registrationMessage && (
-          <div className={styles.messageContainer}>
-            <div className={styles.message}>{registrationMessage}</div>
-          </div>
-        )}
       </div>
     </div>
-  );
+  );  
 };
 
 export default RegistrationForm;

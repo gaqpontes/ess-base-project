@@ -72,11 +72,12 @@ const UpdateForm: React.FC = () => {
           <div className={styles.inputContainer}>
             <label htmlFor="newUserName" className={styles.inputLabel}>New Username:</label>
             <input type="text" id="newUserName" name="newUserName" placeholder="New Username" value={formData.newUserName} onChange={handleChange} className={styles.input} />
+            {/* Aqui está a div que contém a mensagem de atualização */}
+            <div className={styles.messsage}>{updateMessage}</div>
           </div>
           <button type="submit" className={`${styles.button} ${styles.updateButton}`}>Update</button>
         </form>
       </div>
-      <div>{updateMessage}</div>
     </div>
   );
 };
