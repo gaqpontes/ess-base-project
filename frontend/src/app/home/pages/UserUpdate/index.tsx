@@ -55,31 +55,77 @@ const UpdateForm: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputContainer}>
             <label htmlFor="oldEmail" className={styles.inputLabel}>Old Email:</label>
-            <input type="email" id="oldEmail" name="oldEmail" placeholder="Old Email" value={formData.oldEmail} onChange={handleChange} required className={styles.input} />
+            <input 
+              type="email" 
+              id="oldEmail" 
+              name="oldEmail" 
+              placeholder="Old Email" 
+              value={formData.oldEmail} 
+              onChange={handleChange} 
+              required 
+              className={styles.input}
+              data-cy="input-oldEmail" // Adicionando data-cy para o campo de email antigo
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="newName" className={styles.inputLabel}>New Name:</label>
-            <input type="text" id="newName" name="newName" placeholder="New Name" value={formData.newName} onChange={handleChange} className={styles.input} />
+            <input 
+              type="text" 
+              id="newName" 
+              name="newName" 
+              placeholder="New Name" 
+              value={formData.newName} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-newName" // Adicionando data-cy para o campo de novo nome
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="newEmail" className={styles.inputLabel}>New Email:</label>
-            <input type="email" id="newEmail" name="newEmail" placeholder="New Email" value={formData.newEmail} onChange={handleChange} className={styles.input} />
+            <input 
+              type="email" 
+              id="newEmail" 
+              name="newEmail" 
+              placeholder="New Email" 
+              value={formData.newEmail} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-newEmail" // Adicionando data-cy para o campo de novo email
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="newPassword" className={styles.inputLabel}>New Password:</label>
-            <input type="password" id="newPassword" name="newPassword" placeholder="New Password" value={formData.newPassword} onChange={handleChange} className={styles.input} />
+            <input 
+              type="password" 
+              id="newPassword" 
+              name="newPassword" 
+              placeholder="New Password" 
+              value={formData.newPassword} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-newPassword" // Adicionando data-cy para o campo de nova senha
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="newUserName" className={styles.inputLabel}>New Username:</label>
-            <input type="text" id="newUserName" name="newUserName" placeholder="New Username" value={formData.newUserName} onChange={handleChange} className={styles.input} />
+            <input 
+              type="text" 
+              id="newUserName" 
+              name="newUserName" 
+              placeholder="New Username" 
+              value={formData.newUserName} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-newUserName" // Adicionando data-cy para o campo de novo nome de usuário
+            />
             {/* Aqui está a div que contém a mensagem de atualização */}
-            <div className={styles.messsage}>{updateMessage}</div>
+            <div className={styles.messsage} data-cy="update-message">{updateMessage}</div> {/* Adicionando data-cy para a mensagem de atualização */}
           </div>
-          <button type="submit" className={`${styles.button} ${styles.updateButton}`}>Update</button>
+          <button type="submit" className={`${styles.button} ${styles.updateButton}`} data-cy="update-button">Update</button> {/* Adicionando data-cy para o botão de atualização */}
         </form>
       </div>
     </div>
-  );
+  );  
 };
 
 export default UpdateForm;
