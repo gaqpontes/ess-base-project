@@ -40,26 +40,47 @@ const DeleteUserForm: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-cy="delete-user-container">
       <div className={styles.UserDelete}><h2>Delete User</h2></div>
       <div className={styles.warningMessage}><h3>Are you sure you want to delete your user account?</h3></div>
       <div className={styles.fieldContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputContainer}>
             <label htmlFor="confirmEmail" className={styles.inputLabel}>Confirm Email:</label>
-            <input type="email" id="confirmEmail" name="email" placeholder="Confirm Email" value={formData.email} onChange={handleChange} required className={styles.input} />
+            <input 
+              type="email" 
+              id="confirmEmail" 
+              name="email" 
+              placeholder="Confirm Email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              required 
+              className={styles.input}
+              data-cy="confirm-email-input" // Adicionando data-cy para o campo de confirmação de email
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="confirmPassword" className={styles.inputLabel}>Confirm Password:</label>
-            <input type="password" id="confirmPassword" name="password" placeholder="Confirm Password" value={formData.password} onChange={handleChange} required className={styles.input} />
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="password" 
+              placeholder="Confirm Password" 
+              value={formData.password} 
+              onChange={handleChange} 
+              required 
+              className={styles.input}
+              data-cy="confirm-password-input" // Adicionando data-cy para o campo de confirmação de senha
+            />
             {/* Aqui está a div que contém a mensagem de exclusão */}
-            <div className={styles.message}>{deleteMessage}</div>
+            <div className={styles.message} data-cy="delete-message">{deleteMessage}</div> {/* Adicionando data-cy para a mensagem de exclusão */}
           </div>
-          <button type="submit" className={`${styles.button} ${styles.deleteButton}`}>Delete</button>
+          <button type="submit" className={`${styles.button} ${styles.deleteButton}`} data-cy="delete-button">Delete</button> {/* Adicionando data-cy para o botão de exclusão */}
         </form>
       </div>
     </div>
-  );  
+  );
+  
 };
 
 export default DeleteUserForm;
