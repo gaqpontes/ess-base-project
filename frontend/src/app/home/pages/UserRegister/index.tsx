@@ -56,27 +56,85 @@ const RegistrationForm: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputContainer}>
             <label htmlFor="name" className={styles.inputLabel}>Name</label>
-            <input type="text" id="name" name="name" placeholder="Nome" value={formData.name} onChange={handleChange} className={styles.input} />
+            <input
+                data-cy="input-name"
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Digite o nome"
+                value={formData.name}
+                onChange={handleChange}
+                className={styles.input}
+              />
+              {formData.name === "" && (
+                <span data-cy="input-name-error" className={styles.formError}>
+                  O nome é obrigatório
+                </span>
+              )}
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="email" className={styles.inputLabel}>Email</label>
-            <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className={styles.input} />
-          </div>
+            <input
+                data-cy="input-email"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Digite o email"
+                value={formData.email}
+                onChange={handleChange}
+                className={styles.input}
+              />
+              {formData.email === "" && (
+                <span data-cy="input-email-error" className={styles.formError}>
+                  O email é obrigatório
+                </span>
+              )}          </div>
           <div className={styles.inputContainer}>
             <label htmlFor="username" className={styles.inputLabel}>Username</label>
-            <input type="text" id="username" name="username" placeholder="Nome de usuário" value={formData.username} onChange={handleChange} className={styles.input} />
-          </div>
+              <input
+                data-cy="input-username"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Digite o nome de usuário"
+                value={formData.username}
+                onChange={handleChange}
+                className={styles.input}
+              />
+              {formData.username === "" && (
+                <span data-cy="input-username-error" className={styles.formError}>
+                  O nome de usuário é obrigatório
+                </span>
+              )}          </div>
           <div className={styles.inputContainer}>
             <label htmlFor="password" className={styles.inputLabel}>Password</label>
-            <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
-          </div>
+                        <input
+                data-cy="input-password"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Digite a senha"
+                value={formData.password}
+                onChange={handleChange}
+                className={styles.input}
+              />
+              {formData.password === "" && (
+                <span data-cy="input-password-error" className={styles.formError}>
+                  A senha é obrigatória
+                </span>
+              )}          </div>
           {registrationMessage && (
             <div>
               <div className={styles.messageContainer}>{registrationMessage}</div>
             </div>
           )}
-          <button type="submit" className={styles.button}>Sign in</button>
-        </form>
+            <button
+              data-cy="submit-button"
+              type="submit"
+              className={styles.button}
+            >
+              Sign in
+            </button>        </form>
       </div>
     </div>
   );  
