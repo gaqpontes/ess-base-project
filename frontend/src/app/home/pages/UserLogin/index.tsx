@@ -34,31 +34,50 @@ const LoginForm = () => {
 
   return (
     <div className={styles.container}>
-        <div className={styles.LoginText}>
-          <h2>Login</h2>
-        </div>
-        <div className={styles.EnterEmailAndPassword}>
-          <h5>Enter your email below to login to your account</h5>
-        </div>
-        <div className={styles.fieldContainer}>
-          <form onSubmit={handleSubmit}>
+      <div className={styles.LoginText}>
+        <h2>Login</h2>
+      </div>
+      <div className={styles.EnterEmailAndPassword}>
+        <h5>Enter your email below to login to your account</h5>
+      </div>
+      <div className={styles.fieldContainer}>
+        <form onSubmit={handleSubmit}>
           <div className={styles.inputContainer}>
             <label htmlFor="email" className={styles.inputLabel}>Email</label>
-            <input type="email" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className={styles.input} />
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="Email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-email" // Adicionando data-cy para o campo de e-mail
+            />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="password" className={styles.inputLabel}>Password</label>
-            <input type="password" id="password" name="password" placeholder="Senha" value={formData.password} onChange={handleChange} className={styles.input} />
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Senha" 
+              value={formData.password} 
+              onChange={handleChange} 
+              className={styles.input}
+              data-cy="input-password" // Adicionando data-cy para o campo de senha
+            />
             {/* Move o message-container para dentro da inputContainer */}
             <div className={styles.message}>
-              {loginMessage && <div>{loginMessage}</div>}
+              {loginMessage && <div data-cy="login-message">{loginMessage}</div>} {/* Adicionando data-cy para a mensagem de login */}
             </div>
           </div>
-          <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Login</button>
-          </form>
-        </div>    
+          <button type="submit" className={`${styles.button} ${styles.submitButton}`} data-cy="login-button">Login</button> {/* Adicionando data-cy para o botão de login */}
+        </form>
+      </div>    
     </div>
-);
+  );
+  
 
 };
 
