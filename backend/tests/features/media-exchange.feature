@@ -15,14 +15,13 @@ Scenario: Remoção de mídia inexistente
     And o JSON da resposta deve conter a mensagem "Message not found"
 
 Scenario: Remoção de mídia enviada por outro usuário
-    And o método getMessage retorna uma mídia com id "123", sender "Bia" e receiver "Leticia"
+    Given o método getMessage retorna uma mídia com id "123", sender "Bia" e receiver "Leticia"
     When uma requisição DELETE for enviada para "/api/messages/delete/Leticia/Bia/123"
     Then o status da resposta deve ser "500"
     And o JSON da resposta deve conter a mensagem "Message not sent by you"
 
-
-
-
-
-
-
+Scenario: Envio de mídia que excede o tamanho máximo permitido
+    Given o arquivo "documento.pdf" possui o tamanho de "6mb"
+    When uma requisição POST for enviada para "/api/messages/send/Leticia/Bia/upload/documento.pdf"
+    Then o status da resposta deve ser "500"
+    And o JSON da resposta deve conter a mensagem "Maximum file size exceeded"

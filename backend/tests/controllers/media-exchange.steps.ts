@@ -100,4 +100,23 @@ defineFeature(feature, (test) => {
       expect(response.body.msg).toBe(message);
     });
   });
+
+  test('Envio de mídia que excede o tamanho máximo permitido', ({ given, when, then, and }) => {
+    given(/^o arquivo "(.*)" possui o tamanho de "(.*)"$/, (file, size) => {
+
+    });
+
+    when(/^uma requisição POST for enviada para "(.*)"$/, async (url) => {
+      response = await request.post(url);
+    });
+
+    then(/^o status da resposta deve ser "(.*)"$/, (statusCode) => {
+      expect(response.status).toBe(parseInt(statusCode, 10));
+    });
+
+    and(/^o JSON da resposta deve conter a mensagem "(.*)"$/, (message) => {
+      expect(response.body.msg).toBe(message);
+    });
+  });
+
 });

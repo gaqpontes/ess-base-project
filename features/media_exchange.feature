@@ -68,12 +68,6 @@ Scenario: Obter histórico de envio de mídias sem sucesso
     And o JSON da resposta deve conter a mensagem "No medias exchanged"
 
 Scenario: Remoção de mídia inexistente
-    Given o método "getMessage" retorna "null"
-    When uma requisão "DELETE" for enviada para "/Bia/Leticia/123"
-    Then o status da resposta deve ser "500"
-    And o JSON da resposta deve conter a mensagem "Message not found"
-
-Scenario: Remoção de mídia inexistente
     Given o método getMessage retorna "undefined"
     When uma requisição DELETE for enviada para "/api/messages/delete/Bia/Leticia/123"
     Then o status da resposta deve ser "500"
@@ -96,14 +90,3 @@ Scenario: Envio de mídia que obedece ao tamanho máximo permitido
     When uma requisição POST for enviada para "/api/messages/send/Leticia/Bia/upload/imagem.pdf"
     Then o status da resposta deve ser "200"
     And o JSON da resposta deve conter a mensagem "File sent succesfully"
-
-
-
-
-
-
-
-
-
-
-
