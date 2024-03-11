@@ -17,19 +17,19 @@ class MessageController {
   }
 
   private initRoutes() {    
-    this.router.get(`${this.prefix}/:firstUser/:secondUser`, (req: Request, res: Response) =>
+    this.router.get(`${this.prefix}/get/:firstUser/:secondUser`, (req: Request, res: Response) =>
     this.getMessage(req, res));
 
-    this.router.post(`${this.prefix}/:sender/:receiver/upload/`, (req: Request, res: Response) =>
+    this.router.post(`${this.prefix}/send/:sender/:receiver/upload/`, (req: Request, res: Response) =>
     this.getMedia(req, res));
 
-    this.router.post(`${this.prefix}/:sender/:receiver`, (req: Request, res: Response) =>
+    this.router.post(`${this.prefix}/send/:sender/:receiver`, (req: Request, res: Response) =>
     this.postMessage(req, res));
 
-    this.router.post(`${this.prefix}/:sender/:receiver/upload/:path`, (req: Request, res: Response) =>
+    this.router.post(`${this.prefix}/send/:sender/:receiver/upload/:path`, (req: Request, res: Response) =>
     this.postFile(req, res));
 
-    this.router.delete(`${this.prefix}/:sender/:receiver/:id`, (req: Request, res: Response) =>
+    this.router.delete(`${this.prefix}/delete/:sender/:receiver/:id`, (req: Request, res: Response) =>
     this.deleteMessage(req, res));
   }
 
@@ -100,12 +100,15 @@ class MessageController {
     const receiver = req.params.receiver
     const messageId = uuidv4();
 
+    const timestampNumber = Date.now();
+
     const messageSent: IMessage = {
       id: messageId,
       sender: sender,
       content: message,
       receiver: receiver,
-      media: false
+      media: false,
+      timestamp: new Date(timestampNumber)
     }
 
     this.database.addMessage(messageSent);
@@ -128,21 +131,31 @@ class MessageController {
       const sender = req.params.sender
       const receiver = req.params.receiver
       const messageId = uuidv4();
+      const fileSizeInBytes = Buffer.byteLength(data, 'base64');
+      const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+      const timestampNumber = Date.now();
+      
+      if (fileSizeInMB > 5) {
+        return new FailureResult({
+          msg: 'Maximum file size exceeded'
+        }).handle(res);
+      } else {
+        const messageSent: IMessage = {
+          id: messageId,
+          sender: sender,
+          content: data,
+          receiver: receiver,
+          media: true,
+          timestamp: new Date(timestampNumber)
+        }
+    
+        this.database.addMessage(messageSent);
 
-      const messageSent: IMessage = {
-        id: messageId,
-        sender: sender,
-        content: data,
-        receiver: receiver,
-        media: true
+        return new SuccessResult({
+            msg: 'File sent successfully',
+            data: {sender, data, receiver, messageId},
+        }).handle(res);
       }
-  
-      this.database.addMessage(messageSent);
-
-      return new SuccessResult({
-          msg: 'File sent successfully',
-          data: {sender, data, receiver, messageId},
-      }).handle(res);
     });
 }
 }

@@ -5,6 +5,7 @@ import { di } from '../../src/di';
 import RecoveryTokensDatabase from '../../src/database/recovery.database';
 import UserDatabase from '../../src/services/user.register.database';
 import { constrainedMemory } from 'process';
+import fs from 'fs';
 
 const feature = loadFeature('tests/features/recovery.feature');
 const request = supertest(app);
@@ -19,7 +20,30 @@ defineFeature(feature, (test) => {
     mockRecoveryTokensDatabase = RecoveryTokensDatabase.getInstance();
     mockUserDatabase = new UserDatabase('./src/database/users.json');
   });
+  afterEach(() => {
+    // Empty the content of users.json after each test
+    fs.writeFileSync('./src/database/users.json', JSON.stringify([]));
+  });
 
+  afterAll(() => {
+    // Add the specified user data at the end of all tests
+    const userData = {
+      name: 'João Silva',
+      email: 'Joao2@gmail.com',
+      username: 'joao123',
+      password: '123'
+    };
+
+    // Read the current content of users.json
+    const existingData = JSON.parse(fs.readFileSync('./src/database/users.json', 'utf8'));
+
+    // Add the new user data
+    existingData.push(userData);
+
+    // Write the updated content back to users.json
+    fs.writeFileSync('./src/database/users.json', JSON.stringify(existingData, null, 2));
+  });
+    
   test('Create a recovery token', ({ given, when, then, and }) => {
     given(/^que um usuário esqueceu sua senha$/, () => {
       // Implementação do passo inicial (Given)

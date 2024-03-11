@@ -6,6 +6,8 @@ import UserRegister from "./app/home/pages/UserRegister";
 import UserLogin from "./app/home/pages/UserLogin";
 import UserUpdate from "./app/home/pages/UserUpdate";
 import UserDelete from "./app/home/pages/UserDelete";
+import PasswordRecovery from "./app/home/pages/Recovery";
+import ChangePass from "./app/home/pages/ChangePass";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
   {
     path: "/delete",
     Component: UserDelete,
+  },
+  {
+    path: "/recovery",
+    Component: PasswordRecovery,
+  },
+  {
+    path: "/changepass",
+    Component: ChangePass,
   },
 ]);
 

@@ -3,7 +3,6 @@ import supertest from 'supertest';
 import app from '../../src/app';
 import MessagesDatabase from '../../src/database/message.database';
 import { IMessage } from '../../src/interfaces/chat.interface';
-import Database from '../../src/database';
 
 const feature = loadFeature('tests/features/media-exchange.feature');
 const request = supertest(app);
@@ -11,6 +10,7 @@ const request = supertest(app);
 defineFeature(feature, (test) => {
   let response: supertest.Response;
   let messagesDatabase: MessagesDatabase;
+  let timestampValue: Date;
 
   beforeEach(() => {
     messagesDatabase = MessagesDatabase.getInstance();
@@ -23,12 +23,14 @@ defineFeature(feature, (test) => {
     });
 
     and(/^a mídia com id "(.*)", sender "(.*)" e receiver "(.*)" está na lista$/, (id, sender, receiver) => {
+      timestampValue = new Date(Date.now());
       messagesDatabase.addMessage({
         id: id,
         content: '',
         sender: sender,
         receiver: receiver,
-        media: true
+        media: true,
+        timestamp: timestampValue
       });
     });
 
@@ -51,6 +53,7 @@ defineFeature(feature, (test) => {
         sender: arg1,
         receiver: arg2,
         media: true,
+        timestamp: timestampValue.toISOString()
       });
     });
   });
@@ -61,7 +64,6 @@ defineFeature(feature, (test) => {
     });
 
     when(/^uma requisição DELETE for enviada para "(.*)"$/, async (url) => {
-      console.log(messagesDatabase);
       response = await request.delete(url);
     });
 
@@ -82,6 +84,7 @@ defineFeature(feature, (test) => {
         sender: sender,
         receiver: receiver,
         media: true,
+        timestamp: new Date(Date.now())
       } as IMessage);
     });
 
