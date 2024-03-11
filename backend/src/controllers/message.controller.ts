@@ -4,12 +4,27 @@ import MessagesDatabase from '../database/message.database';
 import { IMessage } from '../interfaces/chat.interface';
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-
+import multer from 'multer';
+import path from 'path';
 
 class MessageController {
   private prefix: string = '/messages';
   public router: Router;
   private database: MessagesDatabase = MessagesDatabase.getInstance();
+
+  public storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+       cb(null, './src/upload/');
+    },
+    filename: function (req, file, cb) {
+      const customName = req.body.customName;
+      const fileExtension = path.extname(file.originalname);
+      const newFileName = customName + fileExtension;
+      cb(null, newFileName);
+    },
+  });
+   
+  public uploadMedia = multer({ storage: this.storage });
 
   constructor(router: Router) {
     this.router = router;
@@ -31,6 +46,11 @@ class MessageController {
 
     this.router.delete(`${this.prefix}/delete/:sender/:receiver/:id`, (req: Request, res: Response) =>
     this.deleteMessage(req, res));
+
+    this.router.post(`${this.prefix}/upload`, this.uploadMedia.single('file'), (req, res) => {
+      console.log('File received:', req.file);
+      res.sendStatus(200);
+     });
   }
 
   private async getMessage(req: Request, res: Response){

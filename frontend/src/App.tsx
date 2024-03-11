@@ -8,11 +8,12 @@ import UserUpdate from "./app/home/pages/UserUpdate";
 import UserDelete from "./app/home/pages/UserDelete";
 import PasswordRecovery from "./app/home/pages/Recovery";
 import ChangePass from "./app/home/pages/ChangePass";
+import MediaExchange from "./app/home/pages/MediaExchange";
 
 const router = createBrowserRouter([
   {
     path: "*",
-    Component: CreateTest,
+    Component: UserLogin,
   },
   {
     path: "/create-test",
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/changepass",
     Component: ChangePass,
+  },
+  {
+    path: "/messages",
+    Component: MediaExchange,
   },
 ]);
 
