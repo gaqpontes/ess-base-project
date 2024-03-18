@@ -62,7 +62,7 @@ const PasswordRecovery = () => {
       <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formInputContainer}>
           <input
-              data-cy="input-name"
+              data-cy="input-email"
               {...register("email")}
               placeholder="Email"
               className={styles.formInput}
@@ -73,7 +73,7 @@ const PasswordRecovery = () => {
             </span>
           )}
         </div>
-        <Button type="submit">Recover</Button>
+        <Button type="submit" data-cy="recover-button">Recover</Button>
         {message && <p>{message}</p>}
       </form>
         <br></br><a href="/login" className={styles.underline}>Login here</a>

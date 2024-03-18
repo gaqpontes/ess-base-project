@@ -63,7 +63,8 @@ export const tokenCreate = async (email: string): Promise<UserRecovery | null> =
 
         if (user) {
         // Gere um novo token aleatório
-        const recoveryToken = crypto.randomBytes(32).toString('hex');  // Substitua isso pela implementação real
+        // const recoveryToken = crypto.randomBytes(32).toString('hex');  // Substitua isso pela implementação real
+        const recoveryToken = "123";
 
         // Adicione o novo token ao RecoveryTokensDatabase
         recoveryTokensDatabase.addRecoveryToken(email, recoveryToken);

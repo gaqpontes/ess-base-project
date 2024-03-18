@@ -106,10 +106,11 @@ const ChangePass = () => {
             </span>
           )}
         </div>
-        <Button id='submitButton' type="submit">Change password</Button>
-        {apiMessage && <p className={styles.alert}>{apiMessage}</p>}
-        {apiMessageS && <p className={styles.success}>{apiMessageS}</p>}
+        <Button data-cy="recover-button" id='submitButton' type="submit">Change password</Button>
+        {apiMessage && <p id="alert" className={styles.alert}>{apiMessage}</p>}
+        {apiMessageS && <p id="alert-success" className={styles.success}>{apiMessageS}</p>}
       </form>
+      <br></br><a href="/login" className={styles.underline}>Login here</a>
     </section>
   );
 };
