@@ -144,44 +144,59 @@ class MessageController {
       }).handle(res);
   }
 
-  private async postFile(req: Request, res: Response){
-    const file = (`./src/upload/${req.params.path}`);
-
-    fs.readFile(file, 'base64', (err, data) => {
-      if (err) {
-        console.error('Error reading file:', err);
-        return;
-      }
-      const sender = req.params.sender
-      const receiver = req.params.receiver
-      const messageId = uuidv4();
-      const fileSizeInBytes = Buffer.byteLength(data, 'base64');
-      const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
-      const timestampNumber = Date.now();
-      
-      if (fileSizeInMB > 5) {
-        return new FailureResult({
-          msg: 'Maximum file size exceeded'
-        }).handle(res);
-      } else {
-        const messageSent: IMessage = {
-          id: messageId,
-          sender: sender,
-          content: data,
-          receiver: receiver,
-          media: true,
-          timestamp: new Date(timestampNumber)
-        }
+  private async postFile(req: Request, res: Response) {
+    const filePath = `./src/upload/${req.params.path}`;
+    const fileExtension = filePath.split('.').pop();
     
-        this.database.addMessage(messageSent);
-
-        return new SuccessResult({
-            msg: 'File sent successfully',
-            data: {sender, data, receiver, messageId},
-        }).handle(res);
-      }
+    if (fileExtension) {
+     const mimeTypeMapping: { [key: string]: string } = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'gif': 'image/gif',
+      'mp4': 'video/mp4',
+      'webm': 'video/webm',
+      'ogg': 'video/ogg',
+      'pdf': 'application/pdf',
+      'mp3': 'audio/mpeg',
+     };
+     const mimeType = mimeTypeMapping[fileExtension] || 'application/octet-stream';
+           
+    fs.readFile(filePath, 'base64', (err, data) => {
+       if (err) {
+         console.error('Error reading file:', err);
+         return;
+       }
+       const sender = req.params.sender;
+       const receiver = req.params.receiver;
+       const messageId = uuidv4();
+       const fileSizeInBytes = Buffer.byteLength(data, 'base64');
+       const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+       const timestampNumber = Date.now();
+   
+       if (fileSizeInMB > 5) {
+         return new FailureResult({
+           msg: 'Maximum file size exceeded',
+         }).handle(res);
+       } else {
+         const messageSent: IMessage = {
+           id: messageId,
+           sender: sender,
+           content: `data:${mimeType};base64,${data}`,
+           receiver: receiver,
+           media: true,
+           timestamp: new Date(timestampNumber),
+         };
+   
+         this.database.addMessage(messageSent);
+   
+         return new SuccessResult({
+           msg: 'File sent successfully',
+           data: { sender, data, receiver, messageId, mimeType },
+         }).handle(res);
+       }   
     });
 }
-}
+}}
 
 export default MessageController;
