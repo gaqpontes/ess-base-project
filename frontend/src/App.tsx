@@ -11,6 +11,7 @@ import ChangePass from "./app/home/pages/ChangePass";
 import MediaExchange from "./app/home/pages/MediaExchange";
 import Notifications from "./app/home/pages/Notifications";
 import ContactsApp from "./app/home/pages/ContactsApp";
+import RecentChats from "./app/home/pages/RecentChats";
         
 const router = createBrowserRouter([
   {
@@ -67,7 +68,10 @@ const router = createBrowserRouter([
     path: "/notifications",
     Component: Notifications,
   },
-  
+  {
+    path: "/chats",
+    Component: RecentChats,
+  }
 ]);
 
 export default function App() {

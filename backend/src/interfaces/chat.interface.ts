@@ -6,7 +6,7 @@ export interface IMessage {
     media: boolean;
     timestamp: Date;
 }
-  
+
 export interface IChat {
     id: string;
     participants: string[]; 

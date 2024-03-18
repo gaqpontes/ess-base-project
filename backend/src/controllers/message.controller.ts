@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { FailureResult, SuccessResult } from '../utils/result';
+import { updateChats } from '../services/chats.service'; 
 import MessagesDatabase from '../database/message.database';
 import NotificationsDatabase from '../database/notifications.database';
 import { IMessage } from '../interfaces/chat.interface';
@@ -137,6 +138,7 @@ class MessageController {
     // Adiciona a notificação ao banco de dados de notificações
     this.notificationsDatabase.addNotification(messageSent);    
     console.log(this.database);
+    updateChats(messageSent)
 
     return new SuccessResult({
         msg: 'Message sent successfully',

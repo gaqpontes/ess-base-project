@@ -36,6 +36,9 @@ router.get('/search', (req: Request, res: Response) => {
     const keyword: string = req.query.keyword as string; // Extrair a palavra-chave da consulta
     try {
         const chats = chatsService.searchChats(keyword);
+        if (chats.length === 0) {
+            return res.status(404).json({ message: 'Nenhum resultado encontrado' });
+        }
         res.json(chats);
     } catch (error: any) {
         res.status(500).json({ message: 'Erro ao buscar conversas: ' + (error as Error).message });

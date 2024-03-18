@@ -1,8 +1,35 @@
 import fs from 'fs';
-import { IChat } from '../interfaces/chat.interface';
 import path from 'path';
+import { IMessage, IChat } from '../interfaces/chat.interface';
 
 const filePath = path.join(__dirname, '..', 'database', 'chats.json');
+
+export const updateChats = (newMessage: IMessage) => {
+    try {
+        // Lê as conversas existentes do arquivo chats.json.
+        let chats: IChat[] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+        // Encontrar a conversa correta para a qual a mensagem deve ser adicionada
+        const chat = chats.find(chat =>
+            (chat.participants.includes(newMessage.sender) && chat.participants.includes(newMessage.receiver)) ||
+            (chat.participants.includes(newMessage.receiver) && chat.participants.includes(newMessage.sender))
+        );
+
+        if (chat) {
+            // Adicionar a nova mensagem à conversa encontrada
+            chat.messages.push(newMessage);
+
+            // Atualizar o arquivo JSON com as conversas atualizadas
+            fs.writeFileSync(filePath, JSON.stringify(chats));
+
+            return chats;
+        } else {
+            throw new Error('Conversa não encontrada para a mensagem enviada.');
+        }
+    } catch (error: any) {
+        throw new Error('Erro ao atualizar conversas com mensagem: ' + (error as Error).message);
+    }
+};
 
 export const addChat = (newChat: any) => {
     try {
@@ -42,8 +69,14 @@ export const getChats = () => {
 
         // Ordenar chats não fixadas com base no timestamp da última mensagem (a mais recente)
         notFixed.sort((a: any, b: any) => {
-            return new Date(b.messages[0].timestamp).getTime() - new Date(a.messages[0].timestamp).getTime();
+            // Acessar a última mensagem (mais recente) de cada chat
+            const lastMessageA = a.messages[a.messages.length - 1];
+            const lastMessageB = b.messages[b.messages.length - 1];
+        
+            // Ordenar com base no timestamp da última mensagem
+            return new Date(lastMessageB.timestamp).getTime() - new Date(lastMessageA.timestamp).getTime();
         });
+        
 
         // Concatenar chats fixadas e não fixadas, mantendo as fixadas no topo
         const sortedChats = [...fixed, ...notFixed];
@@ -87,11 +120,6 @@ export const searchChats = (keyword: string) => {
 
         // Ordenar as conversas filtradas em ordem alfabética pelo nome do contato/grupo
         conversasFiltradas.sort((a, b) => a.participants.join(' ').toLowerCase().localeCompare(b.participants.join(' ').toLowerCase()));
-
-        // Verificar se há resultados da busca
-        if (conversasFiltradas.length === 0) {
-            throw new Error('Nenhum resultado encontrado');
-        } 
         
         return conversasFiltradas;
     } catch (error: any) {
